@@ -458,11 +458,17 @@ class AuthenticateMiddleware(object):
 
     def validate_issuer(self, token):
         """validate the issuer of this token"""
-        data = jwt.decode(token, self.settings.JWT_SECRET_KEY, iss=self.settings.JWT_ISSUER_CLAIM,
-                          audience=self.settings.JWT_ISSUER_CLAIM)
 
-        print(data)
-        return data
+        try:
+            data = jwt.decode(token, self.settings.JWT_SECRET_KEY, iss=self.settings.JWT_ISSUER_CLAIM,
+                              audience=self.settings.JWT_ISSUER_CLAIM)
+
+            print(data)
+            return data
+        except InvalidIssuerError as e:
+            print(e)
+        except Exception as e:
+            print(e)
 
     def validate_token(self, token):
         """check the validity of a token sent with request"""
