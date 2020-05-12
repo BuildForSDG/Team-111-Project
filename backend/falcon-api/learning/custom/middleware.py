@@ -504,7 +504,7 @@ class AuthenticateMiddleware(object):
             print(e)
         except Exception as e:
             print(e)
-
+ss
     def check_ignored_endpoints(self, path, ignored_endpoints, base_path=''):
         """separate possible base api endpoints """
 
