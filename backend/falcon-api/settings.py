@@ -28,7 +28,7 @@ MONGO_HOST = os.getenv("MONGO_HOST")
 MONGO_USERNAME = os.getenv("MONGO_USERNAME", "")
 MONGO_PASSWORD = os.getenv("MONGO_PASSWORD", "")
 MONGO_DATABASE = os.getenv("MONGO_DATABASE")
-M = '{username}:{password}@'.format(username=MONGO_USERNAME, password=MONGO_PASSWORD)
+M = '{username}:{password}'.format(username=MONGO_USERNAME, password=MONGO_PASSWORD)
 MONGO_CRED = "" if len(M) < 6 else M
 DATABASE_URL = '{mongo_base}://{cred}{host}/{database}?retryWrites=true&w=majority'.format(
     mongo_base=MONGO_BASE,
