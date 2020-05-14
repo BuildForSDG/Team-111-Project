@@ -12,7 +12,8 @@ class Signup extends Component {
             Country: '',
             Email: '',
             Password: '',
-            Username: ''
+            Username: '',
+            Phone: ''
             
         }
 
@@ -21,14 +22,17 @@ class Signup extends Component {
         this.Password = this.Password.bind(this);
         this.Name = this.Name.bind(this);
         this.Country = this.Country.bind(this);
+        this.Phone = this.Phone.bind(this);
         this.Username = this.Username.bind(this);
         this.register = this.register.bind(this);
     }
 
-
-
     Email(event) {
         this.setState({ Email: event.target.value })
+    }
+
+    Username(event) {
+        this.setState({ Username: event.target.value })
     }
 
     Password(event) {
@@ -40,12 +44,12 @@ class Signup extends Component {
     Name(event) {
         this.setState({ Name: event.target.value })
     }
-    Username(event) {
-        this.setState({ Username: event.target.value })
+    Phone(event) {
+        this.setState({ Phone: event.target.value })
     }
 
     register(event) {
-
+        console.log(event)
         fetch('https://whispering-forest-37838.herokuapp.com/signup ', {
             method: 'post',
             headers: {
@@ -53,17 +57,18 @@ class Signup extends Component {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                Name: this.state.Name,
-                Password: this.state.Password,
-                Email: this.state.Email,
-                Country: this.state.Country,
-                Username: this.state.Username
+                name: this.state.Name,
+                password: this.state.Password,
+                email: this.state.Email,
+                username: this.state.Username,
+                country_code: "NG",  /// for now tillupdate
+                phone: this.state.Phone
             })
         }).then((Response) => Response.json())
             .then((Result) => {
                 console.log(Result)
-                if (Result.Status === 'Success')
-                    this.props.history.push("/Dashboard");
+                if (Result && Result.username)
+                    this.props.history.push("/Login");
                 else
                     alert('Sorrrrrry !!!!')
             }).catch(error => {
@@ -81,11 +86,8 @@ class Signup extends Component {
                             <Card className="mx-4">
                                 <CardBody className="p-4">
                                     <Form>
-
-                                        
-
                                         <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Name} placeholder="Name" />
+                                            <Input type="text" onChange={this.Name} placeholder="Name"/>
                                         </InputGroup>
                                         <InputGroup className="mb-3">
                                             <Input type="text" onChange={this.Email} placeholder="Email" />
@@ -98,6 +100,9 @@ class Signup extends Component {
                                         </InputGroup>
                                         <InputGroup className="mb-3">
                                             <Input type="text" onChange={this.Username} placeholder="Username" />
+                                        </InputGroup>
+                                        <InputGroup className="mb-3">
+                                            <Input type="text" onChange={this.Phone} placeholder="Phone" />
                                         </InputGroup>
                                         <Button onClick={this.register} color="primary" block>Create an Account</Button>
                                         <p className='pt-3'>
