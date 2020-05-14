@@ -8,10 +8,10 @@ class Login extends Component {
   
         this.state = {  
             Email: '',  
-            Password: ''  
+            Username: '' 
         }  
   
-        this.Password = this.Password.bind(this);  
+        this.Username = this.Username.bind(this);  
         this.Email = this.Email.bind(this);  
         this.login = this.login.bind(this);  
     }  
@@ -19,8 +19,8 @@ class Login extends Component {
     Email(event) {  
         this.setState({ Email: event.target.value })  
     }  
-    Password(event) {  
-        this.setState({ Password: event.target.value })  
+    Username(event) {  
+        this.setState({ Username: event.target.value })  
     }  
     login(event) {  
          
@@ -32,7 +32,7 @@ class Login extends Component {
             },  
             body: JSON.stringify({  
                 Email: this.state.Email,  
-                Password: this.state.Password  
+                Username: this.state.Username 
             })  
         }).then((Response) => Response.json())  
             .then((result) => {  
@@ -56,18 +56,14 @@ class Login extends Component {
                                 <Card className="p-2">  
                                     <CardBody>  
                                         <Form>  
-                                            <div  className="mb-2 pageheading">  
-                                                <div className="col-sm-12 btn btn-primary">  
-                                                    Login  
-                                            </div>  
-                                            </div>  
+                                             
                                             <InputGroup className="mb-3">  
   
                                                 <Input type="text" onChange={this.Email} placeholder=" Email" />  
                                             </InputGroup>  
                                             <InputGroup className="mb-4">  
   
-                                                <Input type="password" onChange={this.Password} placeholder="Password" />  
+                                                <Input type="username" onChange={this.Username} placeholder="Username" />  
                                             </InputGroup>  
                                             <Button onClick={this.login} color="primary" block>Login</Button>  
                                         </Form>  

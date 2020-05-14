@@ -8,20 +8,20 @@ class Signup extends Component {
         super();
 
         this.state = {
-            EmployeeName: '',
-            City: '',
+            Name: '',
+            Country: '',
             Email: '',
             Password: '',
-            Department: ''
+            Username: ''
+            
         }
 
 
         this.Email = this.Email.bind(this);
         this.Password = this.Password.bind(this);
-        this.EmployeeName = this.EmployeeName.bind(this);
-        this.Password = this.Password.bind(this);
-        this.Department = this.Department.bind(this);
-        this.City = this.City.bind(this);
+        this.Name = this.Name.bind(this);
+        this.Country = this.Country.bind(this);
+        this.Username = this.Username.bind(this);
         this.register = this.register.bind(this);
     }
 
@@ -31,34 +31,33 @@ class Signup extends Component {
         this.setState({ Email: event.target.value })
     }
 
-    Department(event) {
-        this.setState({ Department: event.target.value })
-    }
-
     Password(event) {
         this.setState({ Password: event.target.value })
     }
-    City(event) {
-        this.setState({ City: event.target.value })
+    Country(event) {
+        this.setState({ Country: event.target.value })
     }
-    EmployeeName(event) {
-        this.setState({ EmployeeName: event.target.value })
+    Name(event) {
+        this.setState({ Name: event.target.value })
+    }
+    Username(event) {
+        this.setState({ Username: event.target.value })
     }
 
     register(event) {
 
-        fetch('https://whispering-forest-37838.herokuapp.com/signup', {
+        fetch('https://whispering-forest-37838.herokuapp.com/signup ', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                EmployeeName: this.state.EmployeeName,
+                Name: this.state.Name,
                 Password: this.state.Password,
                 Email: this.state.Email,
-                City: this.state.City,
-                Department: this.state.Department
+                Country: this.state.Country,
+                Username: this.state.Username
             })
         }).then((Response) => Response.json())
             .then((Result) => {
@@ -83,24 +82,22 @@ class Signup extends Component {
                                 <CardBody className="p-4">
                                     <Form>
 
-                                        <div className="col-sm-12 btn btn-primary">
-                                            Sign Up
-                        </div>
+                                        
 
                                         <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.EmployeeName} placeholder="Employee" />
+                                            <Input type="text" onChange={this.Name} placeholder="Name" />
                                         </InputGroup>
                                         <InputGroup className="mb-3">
                                             <Input type="text" onChange={this.Email} placeholder="Email" />
                                         </InputGroup>
                                         <InputGroup className="mb-3">
-                                            <Input type="password" onChange={this.Password} placeholder=" Password" />
+                                            <Input type="password" onChange={this.Password} placeholder="Password" />
                                         </InputGroup>
-                                        <InputGroup className="mb-4">
-                                            <Input type="text" onChange={this.City} placeholder="City" />
+                                        <InputGroup className="mb-3">
+                                            <Input type="text" onChange={this.Country} placeholder="Country" />
                                         </InputGroup>
-                                        <InputGroup className="mb-4">
-                                            <Input type="text" onChange={this.Department} placeholder="Department" />
+                                        <InputGroup className="mb-3">
+                                            <Input type="text" onChange={this.Username} placeholder="Username" />
                                         </InputGroup>
                                         <Button onClick={this.register} color="primary" block>Create an Account</Button>
                                         <p className='pt-3'>
