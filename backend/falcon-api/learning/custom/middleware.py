@@ -499,6 +499,9 @@ class AuthenticateMiddleware(object):
             print(e)
 
     def validate_open_audience(self, token):
+        """
+        OPen audience
+        """
         try:
             data = jwt.decode(token, self.settings.JWT_SECRET_KEY, audience=self.settings.JWT_ISSUER_CLAIM)
             open_app = ast.literal_eval(self.settings.OPEN_APP)
