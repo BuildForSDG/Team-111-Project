@@ -1,7 +1,7 @@
 import pkgutil
 import setups
 import sys
-from mini_blog.services.core import *
+from learning.services.core import *
 
 thismodule = sys.modules[__name__]
 

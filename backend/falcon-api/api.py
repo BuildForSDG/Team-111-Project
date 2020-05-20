@@ -7,6 +7,8 @@ API file to run
 from wsgiref import simple_server
 
 from learning.custom.middleware import *
+from learning.resources.core import CoreResource, core_serializers
+from learning.services.core import *
 from learning.services.user import *
 from learning.resources.user import *
 from learning.resources.auth import *
@@ -27,7 +29,13 @@ app.add_error_handler(ActionFailedException, ActionFailedError.handler)
 signup = SignupResource(UserService, SignupResource.serializers)
 login = LoginResource(UserService, LoginResource.serializers)
 profile = ProfileResource(UserService, ProfileResource.serializers)
+account_types = CoreResource(AccountTypeService, core_serializers)
+categories = CoreResource(CategoryService, core_serializers)
+courses = CoreResource(CourseService, core_serializers)
 register_api(app, login, '/login', prefix=settings.API_BASE)
+register_api(app, categories, '/categories', prefix=settings.API_BASE)
+register_api(app, account_types, '/account_types', prefix=settings.API_BASE)
+register_api(app, courses, '/courses', prefix=settings.API_BASE)
 register_api(app, profile, '/profile', prefix=settings.API_BASE)
 register_api(app, signup, '/signup', prefix=settings.API_BASE)
 

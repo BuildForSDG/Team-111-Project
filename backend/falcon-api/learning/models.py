@@ -94,6 +94,33 @@ class AppMixin(object):
         return data_
 
 
+class AccountType(MongoModel, AppMixin):
+    """
+    AccountType
+    """
+    name = fields.CharField(required=False)
+    code = fields.CharField(required=False)
+    description = fields.CharField(required=False)
+
+
+class Category(MongoModel, AppMixin):
+    """
+    AccountType
+    """
+    name = fields.CharField(required=False)
+    code = fields.CharField(required=False)
+    description = fields.CharField(required=False)
+
+
+class Course(MongoModel, AppMixin):
+    """
+    AccountType
+    """
+    name = fields.CharField(required=False)
+    code = fields.CharField(required=False)
+    description = fields.CharField(required=False)
+
+
 class Profile(EmbeddedMongoModel):
     """ Embedded object of user's application permissions. """
 
@@ -277,88 +304,3 @@ class User(MongoModel, AppMixin):
             self.profiles.remove(profile)
         except ValueError as e:
             pass
-
-
-class Reply(EmbeddedMongoModel):
-    user = fields.ReferenceField(User)
-    text = fields.CharField()
-    date_created = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-    last_updated = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-
-
-class Comment(EmbeddedMongoModel):
-    user = fields.ReferenceField(User)
-    text = fields.CharField()
-    replies = fields.EmbeddedDocumentListField(Reply, required=False, default=[])
-    date_created = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-    last_updated = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-
-
-class Like(EmbeddedMongoModel):
-    user_id = fields.CharField()
-
-    def __eq__(self, other):
-        """ custom equality function to ensure object can be compared using either a string or object value """
-
-        # compare permission with another permission object
-        if isinstance(other, Like):
-            return hash(self.user_id) == other.__hash__()
-
-        # compare permission with another string matching the domain
-        if isinstance(other, str):
-            return self.user_id == other
-
-        # # Return whatever the default is if all else fails
-        # return super(Like, self).__eq__()
-
-
-class Post(MongoModel, AppMixin):
-    """ Model for storing user information"""
-
-    title = fields.CharField(required=False, blank=True)
-    subject = fields.CharField(required=True, blank=False)
-    content = fields.CharField(required=True, blank=False)
-    user = fields.ReferenceField(User, required=True, blank=False)
-    comments = fields.EmbeddedDocumentListField(Comment, required=False, default=[])
-    likes = fields.EmbeddedDocumentListField(Like, required=False, blank=True)
-    date_created = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-    last_updated = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
-
-    # noinspection PyClassicStyleClass
-    class Meta:
-        """meta"""
-        write_concern = WriteConcern(j=True)
-        ignore_unknown_fields = True
-
-    def add_like(self, user_id, **kwargs):
-        """
-        add like to post
-
-        Arguments:
-            id {str|uuid} -- remote_id of the profile to include
-        """
-
-        like = Like(user_id=user_id)
-        self.likes.append(like)
-
-        # set last updated.
-        self.last_updated = datetime.utcnow()
-        self.save()
-        return self
-
-    def remove_like(self, user_id):
-        """ Remove a specific like from the list of user likes """
-
-        try:
-            self.likes.remove(user_id)
-            self.last_updated = datetime.utcnow()
-            self.save()
-        except ValueError as e:
-            pass
-
-    def has_like(self, user_id):
-        """
-        Checks if the provided like exists for this user
-        """
-
-        return user_id in self.likes
