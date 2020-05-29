@@ -63,6 +63,14 @@ export default () => {
     <Container>
       <Row className="justify-content-center">
         <Col md="9" lg="7" xl="6">
+          <Alert
+            isOpen={alert.message}
+            toggle={() => setAlert({ color: '', message: '' })}
+            color={alert.color || 'warning'}
+          >
+            {alert.message}
+          </Alert>
+
           {
             step === 1 &&
             <Card>
@@ -70,14 +78,6 @@ export default () => {
                 <div className="card-title font-weight-bold mb-5">
                   Create your free account today!
                 </div>
-
-                <Alert
-                  isOpen={alert.message}
-                  toggle={() => setAlert({ color: '', message: '' })}
-                  color={alert.color || 'warning'}
-                >
-                  {alert.message}
-                </Alert>
 
                 <Form onSubmit={handleSubmit}>
                   <InputGroup className="mb-2">
