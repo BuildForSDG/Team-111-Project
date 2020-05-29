@@ -1,20 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Switch, Route,} from 'react-router-dom'; 
 
+import Login from './Login';
+import Signup from './Signup';
+
+
+import Nav from './Nav';
+import FooterPage from './FooterPage';
 import * as serviceWorker from './serviceWorker';
+
 
 ReactDOM.render(
   <Router>
-  
+    <Nav />
+
     <Switch>
-      <Route path="/" component={App} />
+
+      <Route exact path="/" component={App} />
+      <Route path='/login' component={Login} />
+      <Route path='/signup' component={Signup} />
+      
+     
     </Switch>
 
-</Router>,
+    <FooterPage />
+  </Router>,
   document.getElementById('root')
 );
 

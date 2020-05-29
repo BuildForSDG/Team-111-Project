@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, Col, Container, Form, Input, InputGroup, Row} from 'reactstrap';
+import { Button, Card, CardBody, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 class Signup extends Component {
@@ -14,7 +14,7 @@ class Signup extends Component {
             Password: '',
             Username: '',
             Phone: ''
-            
+
         }
 
 
@@ -79,42 +79,44 @@ class Signup extends Component {
     render() {
 
         return (
-            <div className="app flex-row align-items-center">
-                <Container>
-                    <Row className="justify-content-center">
-                        <Col md="9" lg="7" xl="6">
-                            <Card className="mx-4">
-                                <CardBody className="p-4">
-                                    <Form>
-                                        <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Name} placeholder="Name"/>
-                                        </InputGroup>
-                                        <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Email} placeholder="Email" />
-                                        </InputGroup>
-                                        <InputGroup className="mb-3">
-                                            <Input type="password" onChange={this.Password} placeholder="Password" />
-                                        </InputGroup>
-                                        <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Country} placeholder="Country" />
-                                        </InputGroup>
-                                        <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Username} placeholder="Username" />
-                                        </InputGroup>
-                                        <InputGroup className="mb-3">
-                                            <Input type="text" onChange={this.Phone} placeholder="Phone" />
-                                        </InputGroup>
-                                        <Button onClick={this.register} color="primary" block>Create an Account</Button>
-                                        <p className='pt-3'>
-                                            Already have an account? <Link to='/'>Login</Link>
-                                        </p>
-                                    </Form>
-                                </CardBody>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+           
+                    <div className="app d-flex flex-row justify-content-center content-container pb-5 mt-5">
+                    
+                            <Col md="9" lg="7" xl="6">
+                                <Card className="mx-4">
+                                    <CardBody className="p-4">
+                                        <div className="col-sm-12 btn btn-primary">
+                                            Sign Up
+                        </div>
+                                        <Form>
+                                            <InputGroup className="mb-3">
+                                                <Input type="text" onChange={this.Name} placeholder="Name" />
+                                            </InputGroup>
+                                            <InputGroup className="mb-3">
+                                                <Input type="text" onChange={this.Email} placeholder="Email" />
+                                            </InputGroup>
+                                            <InputGroup className="mb-3">
+                                                <Input type="password" onChange={this.Password} placeholder="Password" />
+                                            </InputGroup>
+                                            <InputGroup className="mb-3">
+                                                <Input type="text" onChange={this.Country} placeholder="Country" />
+                                            </InputGroup>
+                                            <InputGroup className="mb-3">
+                                                <Input type="text" onChange={this.Username} placeholder="Username" />
+                                            </InputGroup>
+                                            <InputGroup className="mb-3">
+                                                <Input type="text" onChange={this.Phone} placeholder="Phone" />
+                                            </InputGroup>
+                                            <Button onClick={this.register} color="primary" block>Create an Account</Button>
+                                            
+                                        </Form>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                    </div>
+               
+            
         );
     }
 }

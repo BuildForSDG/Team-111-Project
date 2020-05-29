@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
-import {Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, Row} from 'reactstrap';
+import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
 import Cookies from 'universal-cookie';
 
 class Login extends Component {
@@ -19,11 +19,11 @@ class Login extends Component {
     }
 
     Email(event) {
-        this.setState({Email: event.target.value})
+        this.setState({ Email: event.target.value })
     }
 
     Password(event) {
-        this.setState({Password: event.target.value})
+        this.setState({ Password: event.target.value })
     }
 
     login(event) {
@@ -55,32 +55,31 @@ class Login extends Component {
     render() {
 
         return (
-            <div className="app flex-row align-items-center">
-                <Container>
-                    <Row className="justify-content-center">
-                        <Col md="9" lg="7" xl="6">
+            <div className="app d-flex flex-row justify-content-center content-container pb-5 mt-5">
 
-                            <CardGroup>
-                                <Card className="p-2">
-                                    <CardBody>
-                                        <Form>
+                <Col Col md="9" lg="7" xl="6" >
+                    <CardGroup>
+                        <Card className="p-2">
+                            <CardBody>
+                                <Form>
+                                    <div className="col-sm-12 btn btn-primary">
+                                        Login
+                                            </div>
+                                    <InputGroup className="mb-3">
 
-                                            <InputGroup className="mb-3">
+                                        <Input type="text" onChange={this.Email} placeholder=" Email" />
+                                    </InputGroup>
+                                    <InputGroup className="mb-4">
 
-                                                <Input type="text" onChange={this.Email} placeholder=" Email"/>
-                                            </InputGroup>
-                                            <InputGroup className="mb-4">
+                                        <Input type="password" onChange={this.Password} placeholder="Password" />
+                                    </InputGroup>
+                                    <Button onClick={this.login} color="primary" block>Login</Button>
+                                </Form>
+                            </CardBody>
+                        </Card>
+                    </CardGroup>
+                </Col>
 
-                                                <Input type="password" onChange={this.Password} placeholder="Password"/>
-                                            </InputGroup>
-                                            <Button onClick={this.login} color="primary" block>Login</Button>
-                                        </Form>
-                                    </CardBody>
-                                </Card>
-                            </CardGroup>
-                        </Col>
-                    </Row>
-                </Container>
             </div>
         );
     }

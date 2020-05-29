@@ -1,10 +1,6 @@
 .App {
   text-align: center;
 }
-
-
-
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -13,7 +9,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  
 }
 
 .App-link {
@@ -22,28 +18,80 @@
 
 .Dashboard {
   background-image: url('/Dashboard.image/Dashboard 1 (1).png');
-  background-size: 'contain';
+  background-size: 'cover';
   width: 100%;
   height: auto;
+  background-blend-mode: luminosity;
 }
+
 .navbar{
   width: 100vw;
-  background-color:#038cfc;
   height: 50px;
-  
+  }
+.app{
+  color: #038cfc;
 }
 .hero{
   width: 100vw;
   height: 250px;
 }
-.main{
-  
-  justify-content: center;
-  
-  width: 100%;
-  height: 750px;
+
+.hero-container{
+  position: relative;
+}
+.container{
+  display: flex;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center; 
+  color: white;
   
 }
-.mentor{
-  top: 250px;
+h4{
+  display: flex;
+  position: absolute;
+  left: 80px;
+  flex-direction: column;
+}
+.sign{
+  display: flex;
+  position: absolute;
+  right: 20px;
+  top: 480px;
+}
+.wrapper{
+  display: flex;
+  position: absolute;
+  top: 0;
+  /* bottom: 0; */
+  left: 0;
+  right: 0;
+}
+.navbar-nav > li{
+  padding-left:30px;
+  padding-right:30px;
+
+}
+p{
+  color: #038cfc;
+}
+
+.footer-title{
+  background-color: blanchedalmond;
+
+left:0;
+bottom:0;
+right:0;
+}
+.logo{
+  display: flex;
+  position: absolute;
+}
+
+.content-container {
+  padding-top: 150px;
+  margin-bottom: 150px;
 }

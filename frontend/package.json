@@ -10,10 +10,13 @@
     "express": "^4.17.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-landing-page": "^2.0.2",
     "react-native-elements": "^2.0.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-user-tour": "^3.0.0",
     "reactstrap": "^8.4.1",
+    "rebass": "^4.0.7",
     "universal-cookie": "^4.0.3"
   },
   "scripts": {
