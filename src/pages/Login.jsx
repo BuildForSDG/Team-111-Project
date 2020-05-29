@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
-import './App.css';
-import {Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, Row} from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
 import Cookies from 'universal-cookie';
 
 class Login extends Component {
@@ -19,11 +18,11 @@ class Login extends Component {
     }
 
     Email(event) {
-        this.setState({Email: event.target.value})
+        this.setState({ Email: event.target.value })
     }
 
     Password(event) {
-        this.setState({Password: event.target.value})
+        this.setState({ Password: event.target.value })
     }
 
     login(event) {
@@ -67,11 +66,11 @@ class Login extends Component {
 
                                             <InputGroup className="mb-3">
 
-                                                <Input type="text" onChange={this.Email} placeholder=" Email"/>
+                                                <Input type="text" onChange={this.Email} placeholder=" Email" />
                                             </InputGroup>
                                             <InputGroup className="mb-4">
 
-                                                <Input type="password" onChange={this.Password} placeholder="Password"/>
+                                                <Input type="password" onChange={this.Password} placeholder="Password" />
                                             </InputGroup>
                                             <Button onClick={this.login} color="primary" block>Login</Button>
                                         </Form>
