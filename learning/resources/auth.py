@@ -64,3 +64,20 @@ class LoginResource(BaseResource):
             raise ValidationFailed({"username": ["Invalid username or password supplied"]})
         res.status = falcon.HTTP_201
         res.media = obj.to_full_dict()
+
+
+class CheckExistsResource(BaseResource):
+    """
+    Checks if email or phone already exist
+    """
+
+    serializers = {
+        "default": CheckExistsRequestSchema,
+        "response": CheckExistsResponseSchema
+    }
+
+    def save(self, data, user_context, req):
+        """
+        Save function
+        """
+        return {"exists": False}

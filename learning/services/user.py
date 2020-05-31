@@ -125,7 +125,7 @@ class AppRegisterService:
         :param kwargs:
         :return:
         """
-        app_group = kwargs.get("app_group")
+        app_group = kwargs.get("account_type")
         if not app_group:
             return kwargs
         group = ApplicationGroup.objects.raw({"_id": app_group})
@@ -142,6 +142,9 @@ class AppRegisterService:
         :param kwargs:
         :return:
         """
+        if not kwargs.get("teacher", False):
+            print("no access to teacher account")
+            return
         print("registering Teacher profile")
         user = UserService.find_one({"_id": ObjectId(kwargs.get("user_id"))})
         UserService.link_user_to_app(user_id=kwargs.get("user_id"), application_id=application_id,
@@ -157,6 +160,10 @@ class AppRegisterService:
         :param kwargs:
         :return:
         """
+        if not kwargs.get("student", False):
+            print("no access to student account")
+            return
+
         print("registering Student profile")
         user = UserService.find_one({"_id": ObjectId(kwargs.get("user_id"))})
         UserService.link_user_to_app(user_id=kwargs.get("user_id"), application_id=application_id,
@@ -172,6 +179,7 @@ class AppRegisterService:
         :param kwargs:
         :return:
         """
+
         print("registering Admin Shipping profile")
         user = UserService.find_one({"_id": ObjectId(kwargs.get("user_id"))})
         admin = kwargs.get('admin', False)

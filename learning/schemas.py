@@ -41,7 +41,7 @@ class LoginExistsValidator(validate.Validator):
             value {object} -- Value to validate.
         """
         # Check that the username isn't present with any existing user
-        value = re.escape(value)
+        value = re.escape(value.strip())
         search_value = "^%s$" % value
         print(search_value, "=======================")
         params = {"$or": [
@@ -58,6 +58,7 @@ def phone_exists_validator(phone, country_code="NG"):
 
     try:
 
+        print("got herrrrrrrrrrrrr", phone, country_code)
         parsed_phone = phonenumbers.parse(phone, country_code)
         if not phonenumbers.is_valid_number(parsed_phone):
             raise ValidationError(message='Invalid phone number', field_names=['phone'])
@@ -124,10 +125,11 @@ class RegistrationSchema(Schema):
     email = _fields.Email(required=False, allow_none=True, validate=EmailExistsValidator())
     country_code = _fields.String(required=True, allow_none=False, validate=CountryCodeValidator())
     phone = _fields.String(required=True, allow_none=False)
-    app_group = _fields.String(required=False, allow_none=True)
+    account_type = _fields.String(required=False, allow_none=True)
     password = _fields.String(required=True, allow_none=False,
                               validate=validate.Length(min=6, error="Password can not be less than 6 characters"))
-    verify_password = _fields.String(required=False, allow_none=True, )
+    academic_level = _fields.String(required=False, allow_none=True)
+    verify_password = _fields.String(required=False, allow_none=True)
 
     @post_load
     def prepare_payload(self, data, **kwargs):
@@ -137,10 +139,19 @@ class RegistrationSchema(Schema):
         Arguments:
             data {dict} -- data that has been successfully loaded after validation
         """
+
+        print(data.get("academic_level"), "tjeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              AcademicLevel.objects.raw({"code": data.get("academic_level")}).count())
+        if AcademicLevel.objects.raw({"_id": data.get("academic_level")}).count() < 1:
+            data["academic_level"] = None
         return helpers.prepare_user_data(data)
 
     @validates_schema
     def validate_schema(self, data, **kwargs):
+        """
+        Data
+        """
+
         password = data.get("password")
         verify_password = data.get("verify_password", None)
         if verify_password and password != verify_password:
@@ -152,6 +163,9 @@ class RegistrationSchema(Schema):
 
 
 class LoginSchema(Schema):
+    """
+    LoginSchema
+    """
     username = _fields.String(required=True, allow_none=False, validate=LoginExistsValidator())
     password = _fields.String(required=True, allow_none=False)
 
@@ -169,56 +183,66 @@ class UserResponseSchema(Schema):
     pk = _fields.String(required=False, allow_none=True)
 
 
-class PostRequestSchema(Schema):
-    title = _fields.String(required=False, allow_none=True)
-    subject = _fields.String(required=True, allow_none=False)
-    content = _fields.String(required=True, allow_none=False)
-
-
-class CommentRequestSchema(Schema):
-    text = _fields.String(required=True, allow_none=False)
-
-
-class ReplyRequestSchema(Schema):
-    text = _fields.String(required=True, allow_none=False)
-
-
 class DefaultResponseSchema(Schema):
+    """
+    DefaultResponse
+    """
     user = _fields.Nested(UserResponseSchema, required=False, only=("name",))
 
 
-class ReplyResponseSchema(DefaultResponseSchema):
-    text = _fields.String(allow_none=True)
-
-
-class CommentResponseSchema(DefaultResponseSchema):
-    text = _fields.String(allow_none=True)
-    replies = _fields.List(_fields.Nested(UserResponseSchema, only=("name",)), required=False)
-
-
-class LikeResponseSchema(Schema):
-    user_id = _fields.String(allow_none=True)
-
-
-class PostResponseSchema(Schema):
-    pk = _fields.String(required=False, allow_none=True)
-    _id = _fields.String(required=False, allow_none=True)
-    title = _fields.String(required=False, allow_none=True)
-    subject = _fields.String(required=True, allow_none=False)
-    content = _fields.String(required=True, allow_none=False)
-    comments = _fields.List(_fields.Nested(CommentResponseSchema), required=False, allow_none=True)
-    likes = _fields.List(_fields.Nested(LikeResponseSchema))
-    user = _fields.Nested(UserResponseSchema, required=True, allow_none=False)
-    date_created = _fields.DateTime(required=False, allow_none=True)
-    last_updated = _fields.DateTime(required=False, allow_none=True)
-
-
 class AuthUserResponseSchema(UserResponseSchema):
-    auth_token = _fields.String(required=False, allow_none=True)
+    """
+    AuthUserResponse
+    """
+    auth_token = _fields.String(allow_none=True)
+
+
+class CheckExistsRequestSchema(Schema):
+    """
+    CheckExistsRequestSchema
+    """
+    phone = _fields.String(allow_none=True)
+    country_code = _fields.String(allow_none=True, default="NG")
+    email = _fields.String(allow_none=True)
+
+    @validates_schema
+    def validate_schema(self, data, **kwargs):
+        """
+        Value
+        """
+        email = data.get("email")
+        phone = data.get("phone")
+        country_code = data.get("country_code")
+        email_pass = False
+        phone_pass = False
+        if not phone and not email:
+            raise validate.ValidationError("phone or email required.")
+
+        if email:
+            try:
+                LoginExistsValidator().__call__(email)
+            except validate.ValidationError:
+                email_pass = True
+            if not email_pass:
+                raise validate.ValidationError("Email address exists.")
+        if phone:
+            phone_exists_validator(phone, country_code)
+            try:
+                LoginExistsValidator().__call__(phone)
+            except validate.ValidationError:
+                phone_pass = True
+            if not phone_pass:
+                raise validate.ValidationError("Phone number exists.")
+
+
+class CheckExistsResponseSchema(Schema):
+    """
+    CheckExistsRequestSchema
+    """
+    exists = _fields.Bool(allow_none=False, required=True)
 
 
 class BlankSchema(Schema):
     """
 
     """
-

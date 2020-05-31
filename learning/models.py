@@ -99,16 +99,16 @@ class AccountType(MongoModel, AppMixin):
     AccountType
     """
     name = fields.CharField(required=False)
-    code = fields.CharField(required=False)
+    code = fields.CharField(required=False, primary_key=True)
     description = fields.CharField(required=False)
 
 
-class Category(MongoModel, AppMixin):
+class AcademicLevel(MongoModel, AppMixin):
     """
     AccountType
     """
     name = fields.CharField(required=False)
-    code = fields.CharField(required=False)
+    code = fields.CharField(required=False, primary_key=True)
     description = fields.CharField(required=False)
 
 
@@ -117,7 +117,7 @@ class Course(MongoModel, AppMixin):
     AccountType
     """
     name = fields.CharField(required=False)
-    code = fields.CharField(required=False)
+    code = fields.CharField(required=False, primary_key=True)
     description = fields.CharField(required=False)
 
 
@@ -189,6 +189,7 @@ class User(MongoModel, AppMixin):
     name = fields.CharField(required=True, blank=False)
     email = fields.EmailField(required=False, blank=True)
     country = fields.ReferenceField(Country, required=False, blank=True)
+    academic_level = fields.ReferenceField(AcademicLevel, required=False, blank=True)
     phone = fields.CharField(required=False, blank=True)
     password = fields.CharField(required=False, blank=True)
     profiles = fields.EmbeddedDocumentListField(Profile, default=[], blank=True)

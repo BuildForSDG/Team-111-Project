@@ -15,27 +15,30 @@ from learning.resources.auth import *
 
 import settings
 
-app = falcon.API(middleware=[AuthenticateMiddleware(['/signup', '/login'], settings),
+app = falcon.API(middleware=[AuthenticateMiddleware(['/signup', '/login', '/check_exists', '/academic_levels',
+                                                     '/account_types', '/subjects', '/countries'], settings),
                              RequestResponseMiddleware(),
-                             QueryParamsMiddleware()],)
-
+                             QueryParamsMiddleware()], )
 
 app.add_error_handler(ObjectNotFoundException, ObjectNotFoundError.handler)
 app.add_error_handler(TypeError, MissingArgumentError.handler)
 app.add_error_handler(MissingArgumentException, MissingArgumentError.handler)
 app.add_error_handler(ActionFailedException, ActionFailedError.handler)
 
-
 signup = SignupResource(UserService, SignupResource.serializers)
 login = LoginResource(UserService, LoginResource.serializers)
 profile = ProfileResource(UserService, ProfileResource.serializers)
+countries = CoreResource(CountryService, core_serializers)
 account_types = CoreResource(AccountTypeService, core_serializers)
-categories = CoreResource(CategoryService, core_serializers)
-courses = CoreResource(CourseService, core_serializers)
+academic_levels = CoreResource(AcademicLevelService, core_serializers)
+subjects = CoreResource(CourseService, core_serializers)
+check_exists = CheckExistsResource(UserService, CheckExistsResource.serializers)
 register_api(app, login, '/login', prefix=settings.API_BASE)
-register_api(app, categories, '/categories', prefix=settings.API_BASE)
+register_api(app, check_exists, '/check_exists', prefix=settings.API_BASE)
+register_api(app, academic_levels, '/academic_levels', prefix=settings.API_BASE)
 register_api(app, account_types, '/account_types', prefix=settings.API_BASE)
-register_api(app, courses, '/courses', prefix=settings.API_BASE)
+register_api(app, countries, '/countries', prefix=settings.API_BASE)
+register_api(app, subjects, '/subjects', prefix=settings.API_BASE)
 register_api(app, profile, '/profile', prefix=settings.API_BASE)
 register_api(app, signup, '/signup', prefix=settings.API_BASE)
 

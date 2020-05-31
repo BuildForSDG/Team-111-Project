@@ -1,5 +1,5 @@
 obj = dict(
-    klass="CategoryService",
+    klass="AcademicLevelService",
     data=[
         {
             "name": "Primary Institution",

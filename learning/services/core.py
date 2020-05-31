@@ -5,5 +5,6 @@ from learning.models import *
 ApplicationService = ServiceFactory.create_service(Application)
 ApplicationGroupService = ServiceFactory.create_service(ApplicationGroup)
 AccountTypeService = ServiceFactory.create_service(AccountType)
-CategoryService = ServiceFactory.create_service(Category)
+AcademicLevelService = ServiceFactory.create_service(AcademicLevel)
 CourseService = ServiceFactory.create_service(Course)
+CountryService = ServiceFactory.create_service(Country)
