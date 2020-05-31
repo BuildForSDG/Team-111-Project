@@ -6,7 +6,7 @@ class App extends React.Component{
   render(){
     return(
       <div>
-        <Button color="primary">PojectName</Button>
+        <Button color="primary">ProjectName</Button>
       </div>
     )
   }
