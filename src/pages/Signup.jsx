@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
 import {
     Alert,
     Button,
@@ -17,8 +16,17 @@ import {
 } from 'reactstrap';
 
 import useForm from '../hooks/useForm';
+import {doPost} from "../utils/apiRequestHandler";
+import {getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries} from "../dependencies/signup";
+
 
 export default () => {
+
+    const [accountTypes, setAccountTypes] = useState([]);
+    const [academicLevels, setAcademicLevels] = useState([]);
+    const [countries, setCountries] = useState([]);
+    const [academicSubjects, setAcademicSubjects] = useState([]);
+
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1);
     const [alert, setAlert] = useState({color: '', message: ''});
@@ -34,31 +42,51 @@ export default () => {
         subject: ''
     });
 
+    const successStatusCodes = [200, 201];
+
+    useEffect(() => {
+        if (accountTypes.length < 1) {
+            getAccountTypes().then(results => {
+                setAccountTypes(results);
+            });
+        }
+        if (academicLevels.length < 1) {
+            getAcademicLevels().then(results => {
+                setAcademicLevels(results);
+            });
+        }
+        if (academicSubjects.length < 1) {
+            getAcademicSubjects().then(results => {
+                setAcademicSubjects(results);
+            });
+        }
+        if (countries.length < 1) {
+            getCountries().then(results => {
+                setCountries(results);
+            });
+        }
+
+
+    }, []);
+
     const register = async () => {
         setAlert({color: '', message: ''});
         setLoading(true);
-        try {
-            console.log("this are the fields", fields);
-            await axios({
 
-                method: 'POST',
-                url: 'https://whispering-forest-37838.herokuapp.com/signup',
-                data: {...fields, country_code: 'NG'}
-            });
-            setAlert({color: 'success', message: 'Registration successful'});
+        const postData = {...fields, country_code: 'NG'}
+        const res = await doPost('signup', postData)
+        if (!res) {
+            setAlert({color: 'danger', message: "Internal Server error"});
             setLoading(false);
-        } catch (error) {
-            setAlert({color: 'danger', message: 'An error occured'});
-            setLoading(false);
+            return
         }
-    }
+        if (!successStatusCodes.includes(res.reqStatus)) {
+            setAlert({color: 'danger', message: res.message});
+            setLoading(false);
+            return
+        }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // register();
-        console.log(step, "this is the stepp");
-        setStep(2);
-
+        setAlert({color: 'success', message: 'Registration successful'});
     }
 
     const goBack = () => {
@@ -70,32 +98,50 @@ export default () => {
     }
 
 
-    const accountTypes = () => {
-        return [{"name": "Student", "code": "student"}, {"name": "Teacher", "code": "teacher"}]
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // register();
+        setAlert({color: '', message: ''});
+        setLoading(true);
+        const reqData = {'phone': fields.phone, 'email': fields.email, 'country_code': "NG"};
+        const res = await doPost('check_exists', reqData);
+        if (!res) {
+            setAlert({color: 'danger', message: "Internal Server error"});
+            setLoading(false);
+            return
+        }
+        if (!successStatusCodes.includes(res.reqStatus)) {
+            setAlert({color: 'danger', message: res.message});
+            setLoading(false);
+            return
+        }
 
-    const academicLevels = () => {
-        return [{"name": "Primary", "code": "primary"}, {"name": "Secondary", "code": "secondary"}]
-    }
-
-    const academicSubjects = () => {
-        return [{"name": "Math", "code": "math"}, {"name": "English", "code": "english"}]
+        setAlert({color: '', message: ''});
+        setLoading(false);
+        setStep(2);
     }
 
     const setAccountType = (value) => {
-        console.log("in srt t")
+        const found = accountTypes.some(el => el.code === value.toLowerCase());
+        if (!found) return;
         setField('account_type', value);
-        (value === 'student' || value === 'teacher') && setStep(3);
-    }
+        setStep(3)
+    };
 
     const setAcademicLevel = (value) => {
+        const found = academicLevels.some(el => el.code === value.toLowerCase());
+        if (!found) return
         setField('academic_level', value);
         setStep(4);
     }
 
     const setSubject = (value) => {
-        setField('subject', value);
-        setStep(5);
+        const found = academicSubjects.some(el => el.code === value.toLowerCase());
+        if (found) {
+            setField('subject', value);
+            setStep(5);
+
+        }
     }
 
     return (
@@ -104,21 +150,22 @@ export default () => {
                 <Col md="9" lg="7" xl="6">
 
 
-                                <Alert
-                                    isOpen={alert.message}
-                                    toggle={() => setAlert({color: '', message: ''})}
-                                    color={alert.color || 'warning'}
-                                >
-                                    {alert.message}
-                                </Alert>
+                    <Alert
+                        isOpen={alert.message}
+                        toggle={() => setAlert({color: '', message: ''})}
+                        color={alert.color || 'warning'}
+                    >
+                        {alert.message}
+                    </Alert>
 
-                          {
-            step === 1 &&
-            <Card>
-              <CardBody>
-                <div className="card-title font-weight-bold mb-5">
-                  Create your free account today!
-                </div>      <Form onSubmit={handleSubmit}>
+                    {
+                        step === 1 &&
+                        <Card>
+                            <CardBody>
+                                <div className="card-title font-weight-bold mb-5">
+                                    Create your free account today!
+                                </div>
+                                <Form onSubmit={handleSubmit}>
                                     <InputGroup className="mb-2">
                                         <Input value={fields.name} name="name" type="text" onChange={handleChange}
                                                placeholder="Full name" required disabled={loading}/>
@@ -166,13 +213,14 @@ export default () => {
                                 </div>
 
                                 <Row>
-                                    {accountTypes().map(accountType => (
+
+                                    {accountTypes.map(accountType => (
                                         <Col md="6" key={accountType.code}>
                                             <Card className="cursor-pointer" onClick={() =>
                                                 setAccountType(accountType.code)}>
                                                 <CardBody>
                                                     <CardTitle>{accountType.name}</CardTitle>
-                                                    <CardSubtitle>Create a learning account</CardSubtitle>
+                                                    <CardSubtitle>{accountType.description}</CardSubtitle>
                                                 </CardBody>
                                             </Card>
                                         </Col>
@@ -199,18 +247,18 @@ export default () => {
                                 </div>
 
                                 <Row>
-                                    {academicLevels().map(academicLevel => (
+                                    {academicLevels.map(academicLevel => (
                                         <Col md="6" key={academicLevel.code}>
                                             <Card className="cursor-pointer" onClick={() =>
                                                 setAcademicLevel(academicLevel.code)}>
                                                 <CardBody>
                                                     <CardTitle>{academicLevel.name}</CardTitle>
-                                                    <CardSubtitle>Create a learning account</CardSubtitle>
+                                                    <CardSubtitle>{academicLevel.description}</CardSubtitle>
                                                 </CardBody>
                                             </Card>
                                         </Col>
 
-                                    ))};
+                                    ))}
                                 </Row>
                                 <Button type="button" color="primary" size="lg" className="mt-5" disabled={loading}
                                         onClick={() => goBack()}>
@@ -229,13 +277,13 @@ export default () => {
                                 </div>
 
                                 <Row>
-                                    {academicSubjects().map(academicSubject => (
+                                    {academicSubjects.map(academicSubject => (
                                         <Col md="6" key={academicSubject.code}>
                                             <Card className="cursor-pointer" onClick={() =>
                                                 setSubject(academicSubject.code)}>
                                                 <CardBody>
                                                     <CardTitle>{academicSubject.name}</CardTitle>
-                                                    <CardSubtitle>Create a learning account</CardSubtitle>
+                                                    <CardSubtitle>{academicSubject.description}</CardSubtitle>
                                                 </CardBody>
                                             </Card>
                                         </Col>
