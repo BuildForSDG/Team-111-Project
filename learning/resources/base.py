@@ -10,7 +10,8 @@ class BaseResource(object):
     """
 
     def __init__(self, service_class, serializers={}, limiter=None, query=None,
-                 is_admin=False, permissions=[], skip_obj_id=False, permit=None, searchable_fields=["date_created"]):
+                 is_admin=False, permissions=[], skip_obj_id=False, permit=None, searchable_fields=["date_created"],
+                 default_page_limit=20):
         """
         the initialization of the baseResource
         :param service_class: This is the service class that this resource will operate on
@@ -23,6 +24,7 @@ class BaseResource(object):
         self.skip_obj_id = skip_obj_id if skip_obj_id else False
         self.is_admin = is_admin if is_admin else is_admin
         self.searchable_fields = searchable_fields
+        self.default_page_limit = default_page_limit
 
     def save(self, data, user_context, req):
         """
@@ -127,6 +129,7 @@ class BaseResource(object):
             query = self.execute_query(base_query, user_context, req)
             limited_query = self.limiter(query, user_context=user_context, req=req, user_id=user_id)
             res.context["results"] = limited_query
+            res.context["default_page_limit"] = self.default_page_limit
 
         if obj_id and not resource_name:
             res.status = falcon.HTTP_200

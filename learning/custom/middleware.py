@@ -300,7 +300,9 @@ class QueryParamsMiddleware(object):
     def paginate_response(self, req, res):
         """paginate the response based on paging params in request context"""
 
-        params = req.context.get("page_by", {"page": 1, "per_page": 20})
+        page_limit = res.context.get("default_page_limit", 20)
+
+        params = req.context.get("page_by", {"page": 1, "per_page": page_limit})
         if type(params) in [str, str] or params == {} or not params:
             params = {"page": 1, "per_page": 20}
         print(params, "page params", params.items())
