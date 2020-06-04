@@ -2,8 +2,7 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Signin from './pages/Signin';
+import Register from './pages/Register';
 
 export default () => (
   <div className="container">
@@ -16,22 +15,21 @@ export default () => (
           <li className="nav-item">
             <Link to={'/login'} className="nav-link text-white">Courses</Link>
           </li>
-          <li className="nav-item">
-            <Link to={'/signup'} className="nav-link text-white">Sign Up</Link>
+          <li className="nav-item ml-4">
+            <Link to={'/dashboard'} className="nav-link text-white">Dashboard</Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item ml-4">
+            <Link to={'/register'} className="nav-link text-white">Register</Link>
+          </li>
+          <li className="nav-item ml-4">
             <Link to={'/login'} className="nav-link text-white">Login</Link>
-          </li>
-          <li className="nav-item">
-            <Link to={'/login'} className="nav-link text-white">Signin</Link>
           </li>
         </ul>
       </div>
     </nav>
     <Switch>
       <Route path='/login' component={Login} />
-      <Route path='/signup' component={Signup} />
-      <Route path='/signin' component={Signin} />
+      <Route path='/register' component={Register} />
       <Route path='/dashboard' component={Dashboard} />
     </Switch>
   </div>
