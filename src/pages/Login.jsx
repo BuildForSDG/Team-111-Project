@@ -1,88 +1,66 @@
-import React, { Component } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
-import Cookies from 'universal-cookie';
+import React, { useState } from 'react';
+import { Alert, Button, Card, CardBody, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
+import { doPost } from "../utils/apiRequestHandler";
+import useForm from '../hooks/useForm';
+import { Link } from 'react-router-dom';
 
-class Login extends Component {
-    constructor(props) {
-        super();
 
-        this.state = {
-            Email: '',
-            // Username: '',
-            Password: ''
-        }
+export default () => {
+    const [loading, setLoading] = useState(false);
+    const [alert, setAlert] = useState({ color: '', message: '' });
+    const [fields, handleChange] = useForm({
+        username: '',
+        password: '',
+    });
 
-        this.Email = this.Email.bind(this);
-        this.Password = this.Password.bind(this);
-        this.login = this.login.bind(this);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setAlert({ color: '', message: '' });
+        setLoading(true);
+        const res = await doPost('login', { ...fields });
+        setLoading(false);
+        if (!`${res.reqStatus}`.match(/^20.$/)) return setAlert({ color: 'danger', message: res.message });
     }
 
-    Email(event) {
-        this.setState({ Email: event.target.value })
-    }
+    return (
+        <Container>
+            <Row className="justify-content-center">
+                <Col md="9" lg="7" xl="6">
+                    <Alert
+                        isOpen={alert.message}
+                        toggle={() => setAlert({ color: '', message: '' })}
+                        color={alert.color || 'warning'}
+                    >
+                        {alert.message}
+                    </Alert>
+                    <Card>
+                        <CardBody>
+                            <div className="card-title font-weight-bold mb-5">
+                                Login to your account!
+                            </div>
+                            <Form onSubmit={handleSubmit}>
+                                <InputGroup className="mb-2">
+                                    <Input value={fields.username} name="username" type="text"
+                                        onChange={handleChange} placeholder="Username" required
+                                        disabled={loading} />
+                                </InputGroup>
+                                <InputGroup className="mb-2">
+                                    <Input value={fields.password} name="password" type="password"
+                                        onChange={handleChange} placeholder="Password" required
+                                        disabled={loading} />
+                                </InputGroup>
+                                <Button type="submit" color="primary" size="lg" className="mt-5" disabled={loading}>
+                                    Login
+                                </Button>
 
-    Password(event) {
-        this.setState({ Password: event.target.value })
-    }
-
-    login(event) {
-
-        fetch('https://whispering-forest-37838.herokuapp.com/login', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: this.state.Email,
-                password: this.state.Password
-            })
-        }).then((Response) => {
-            Response.json().then(data => {
-                if (Response.status !== 201) {
-                    console.log(data)
-                    return
-                }
-                const cookies = new Cookies();
-                cookies.set('auth_token', data.auth_token, { path: '/' });
-                this.props.history.push("/Dashboard");
-            });
-        }
-        )
-    }
-
-    render() {
-
-        return (
-            <div className="app flex-row align-items-center">
-                <Container>
-                    <Row className="justify-content-center">
-                        <Col md="9" lg="7" xl="6">
-
-                            <CardGroup>
-                                <Card className="p-2">
-                                    <CardBody>
-                                        <Form>
-
-                                            <InputGroup className="mb-3">
-
-                                                <Input type="text" onChange={this.Email} placeholder=" Email" />
-                                            </InputGroup>
-                                            <InputGroup className="mb-4">
-
-                                                <Input type="password" onChange={this.Password} placeholder="Password" />
-                                            </InputGroup>
-                                            <Button onClick={this.login} color="primary" block>Login</Button>
-                                        </Form>
-                                    </CardBody>
-                                </Card>
-                            </CardGroup>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-        );
-    }
+                                <p className='pt-3'>
+                                    Don't have an account? <Link to='/register'>Register here</Link>
+                                </p>
+                            </Form>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
 }
-
-export default Login;  
