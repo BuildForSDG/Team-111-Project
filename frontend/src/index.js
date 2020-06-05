@@ -4,30 +4,49 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Login from './Login';
 import Signup from './Signup';
-
-
 import Nav from './Nav';
 import FooterPage from './FooterPage';
+import Dashboard from './Dashboard';
 import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
+
+
   <Router>
-    <Nav />
+
+    <Route path='/dashboard' component={Dashboard} />
 
     <Switch>
 
-      <Route exact path="/" component={App} />
-      <Route path='/login' component={Login} />
-      <Route path='/signup' component={Signup} />
-      
-     
+      <Route exact path="/" render={props => (
+        <>
+          <Nav />
+          <App {...props} />
+          <FooterPage />
+        </>
+      )} />
+
+      <Route path='/login' component={Login} render={props => {
+        return (<>
+          <Nav />
+          <Login {...props} />
+          <FooterPage />
+        </>)
+      }} />
+
+      <Route path='/signup' component={Signup} render={props => {
+        return(<>
+        <Nav />
+        <Signup {...props} />
+        <FooterPage />
+        </>)
+      }} />
+
     </Switch>
 
-    <FooterPage />
   </Router>,
   document.getElementById('root')
 );

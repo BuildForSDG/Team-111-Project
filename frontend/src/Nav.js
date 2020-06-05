@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link} from 'react-router-dom';
-import { Navbar, NavbarBrand, NavbarToggler, Collapse, Container, Row, Col, Button } from "reactstrap";
+import { Navbar, NavbarBrand, NavbarToggler, Collapse, Container } from "reactstrap";
 import "./App.css";
 
 class Nav extends React.Component {
@@ -52,7 +52,7 @@ class Nav extends React.Component {
                     <Link to={'/login'} className="nav-link text-primary font-weight-bolder">Login</Link>
                     </li>
                     <li className="nav-item">
-                      <Link to={'/signin'} className="nav-link text-primary font-weight-bolder">Signin</Link>
+                      <Link to={'/dashboard'} className="nav-link text-primary font-weight-bolder">Dashboard</Link>
                     </li>
                     
                   </ul>

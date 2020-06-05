@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, Col, Container, Form, Input, InputGroup, Row } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Button, Card, CardBody, Col,  Form, Input, InputGroup } from 'reactstrap';
 
 class Signup extends Component {
 

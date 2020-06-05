@@ -94,4 +94,106 @@ right:0;
 .content-container {
   padding-top: 150px;
   margin-bottom: 150px;
+  line-height: 40px;
+}
+.form-control-primary {
+  margin: 10px;
+  opacity: 0.2;
+  border-radius: 2px;
+}
+.sidebar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 100;
+  padding: 70px 0 0 10px;
+  border-right: 1px solid #d3d3d3;
+}
+.left-sidebar {
+  position: sticky;
+  top:0;
+  height: calc(100vh - 70px)
+}
+.sidebar-nav li .nav-link {
+  color: #333;
+  font-weight: 500;
+}
+#box1 {
+  border: 5px solid;
+  padding: 40px;
+  margin: 40px 60px;
+  background-color: #0275d8;
+  height: 150px;
+  width: 200px;
+  
+}
+#box2 {
+  border: 5px solid;
+  padding: 40px;
+  margin: 40px 60px;
+  background-color: #0275d8;
+  height: 150px;
+  width: 200px;
+  
+  
+}
+#box3 {
+  border: 5px solid;
+  padding: 40px;
+  margin: 40px 60px;
+  
+  background-color: #0275d8;
+  height: 150px;
+  width: 200px;
+  
+}
+#box4 {
+  border: 5px solid;
+  padding: 40px;
+  margin: 40px 60px;
+  
+  background-color: #0275d8;
+  height: 150px;
+  width: 200px;
+  
+}
+.container-part{
+  display: flex;
+  position: absolute;
+  top: 90px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: left; 
+  color: white;
+  
+}
+#box1 p{
+  color: white;
+  font-size: 20px;
+  justify-content: center;
+}
+#box2 p{
+  color: white;
+  font-size: 20px;
+  justify-content: center;
+}
+#box3 p{
+  color: white;
+  font-size: 20px;
+  justify-content: center;
+}
+#box4 p{
+  color: white;
+  font-size: 20px;
+  justify-content: center;
+}
+.right-part{
+  display: flex;
+  flex-direction: row;
+}
+h3{
+  display: flex;
+  flex-direction: row;
 }
