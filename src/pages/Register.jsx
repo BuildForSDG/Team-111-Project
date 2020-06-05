@@ -14,10 +14,12 @@ import {
   CardTitle,
   CardSubtitle
 } from 'reactstrap';
+import Navbar from '../components/Navbar'
 
 import useForm from '../hooks/useForm';
 import { doPost } from "../utils/apiRequestHandler";
 import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../dependencies/signup";
+import { useHistory } from "react-router-dom";
 
 export default () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -39,6 +41,7 @@ export default () => {
     academic_level: '',
     subject: ''
   });
+  let history = useHistory();
 
   const successStatusCodes = [200, 201];
 
@@ -62,6 +65,7 @@ export default () => {
       return setAlert({ color: 'danger', message: res.message });
     }
     setAlert({ color: 'success', message: 'Registration successful' });
+    history.push('dashboard');
   }
 
   const goBack = () => {
@@ -109,10 +113,11 @@ export default () => {
 
   return (
     <Container>
+      <Navbar />
       <Row className="justify-content-center">
         <Col md="9" lg="7" xl="6">
           <Alert
-            isOpen={alert.message}
+            isOpen={!!alert.message}
             toggle={() => setAlert({ color: '', message: '' })}
             color={alert.color || 'warning'}
           >

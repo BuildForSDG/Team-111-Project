@@ -1,49 +1,44 @@
-.App {
-  text-align: center;
+.dashboard .navbar {
+  min-height: 150px;
 }
 
-
-
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.dashboard .content {
+  background: #f9f9f9;
+  border-radius: 4px;
+  padding: 4rem 3rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  min-height: 400px;
 }
 
-.App-link {
-  color: #61dafb;
+.dashboard .nav-tabs {
+  border: 0;
 }
 
-.Dashboard {
-  background-image: url('/Dashboard.image/Dashboard 1 (1).png');
-  background-size: 'contain';
-  width: 100%;
-  height: auto;
+.dashboard .nav-pills .nav-link {
+  cursor: pointer;
+  margin-left: 10px;
+  border: 0;
 }
-.navbar{
-  width: 100vw;
-  background-color:#038cfc;
-  height: 50px;
-  
+
+.dashboard .nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #007bff;
+  background-color: #007bff14;
 }
-.hero{
-  width: 100vw;
-  height: 250px;
+
+.card-body .card-title {
+  font-size: 1.2rem;
+  max-width: 300px;
 }
-.main{
-  
-  justify-content: center;
-  
-  width: 100%;
-  height: 750px;
-  
+
+.card-text {
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: #999;
 }
-.mentor{
-  top: 250px;
+
+.dashboard .nav-pills .nav-link {
+  cursor: pointer;
+  margin: 0 0 10px;
+  border: 0;
 }

@@ -3,6 +3,8 @@ import { Alert, Button, Card, CardBody, Col, Container, Form, Input, InputGroup,
 import { doPost } from "../utils/apiRequestHandler";
 import useForm from '../hooks/useForm';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar'
+import { useHistory } from "react-router-dom";
 
 
 export default () => {
@@ -12,6 +14,7 @@ export default () => {
         username: '',
         password: '',
     });
+    let history = useHistory();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,14 +23,18 @@ export default () => {
         const res = await doPost('login', { ...fields });
         setLoading(false);
         if (!`${res.reqStatus}`.match(/^20.$/)) return setAlert({ color: 'danger', message: res.message });
+        const token = res.results.auth_token;
+        localStorage.setItem('token', token);
+        history.push('dashboard');
     }
 
     return (
         <Container>
+            <Navbar />
             <Row className="justify-content-center">
                 <Col md="9" lg="7" xl="6">
                     <Alert
-                        isOpen={alert.message}
+                        isOpen={!!alert.message}
                         toggle={() => setAlert({ color: '', message: '' })}
                         color={alert.color || 'warning'}
                     >
