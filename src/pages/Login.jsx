@@ -18,6 +18,10 @@ export default () => {
     });
     let history = useHistory();
 
+    // if (localStorage.getItem("token")){
+    //     history.push("dashboard")
+    // }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setAlert({ color: '', message: '' });

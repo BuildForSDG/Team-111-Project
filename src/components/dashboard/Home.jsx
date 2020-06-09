@@ -1,20 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Card, CardText, CardTitle, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
+import {getAccountTypes, getMyCourses} from "../../utils/dependencies";
 export default () => {
+
+    const [myCourses, setMyCourses] = useState([]);
+
+
+    useEffect(() => {
+        if (myCourses.length < 1) getMyCourses().then(results => setMyCourses(results));
+
+    }, [myCourses])
+
+
     return (
         <>
             <Row>
                 <Col sm={3}>
                     <Card body inverse color="primary">
                         <p>Total Courses</p>
-                        <h2>25</h2>
+                        <h2>{myCourses.length}</h2>
                     </Card>
                 </Col>
                 <Col sm={3}>
                     <Card body inverse style={{ backgroundColor: '#28a745', borderColor: '#28a745' }}>
                         <p>Total Time Spent</p>
-                        <h2>2 hrs</h2>
+                        <h2><b>Coming Soon</b></h2>
                     </Card>
                 </Col>
                 <Col sm={3}>
@@ -25,8 +36,8 @@ export default () => {
                 </Col>
                 <Col sm={3}>
                     <Card body inverse style={{ backgroundColor: '#d39e00', borderColor: '#d39e00' }}>
-                        <p>Something else</p>
-                        <h2>24</h2>
+                        <p>More</p>
+                        <h2><b>Coming Soon</b></h2>
                     </Card>
                 </Col>
             </Row>
@@ -38,24 +49,17 @@ export default () => {
             <br />
             <br />
             <Row>
-                <Col sm={4}>
-                    <Card body>
-                        <CardTitle>Nouns and Pronouns</CardTitle>
-                        <CardText>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut?</CardText>
-                    </Card>
-                </Col>
-                <Col sm={4}>
-                    <Card body>
-                        <CardTitle>Respiratory System</CardTitle>
-                        <CardText>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut?</CardText>
-                    </Card>
-                </Col>
-                <Col sm={4}>
-                    <Card body>
-                        <CardTitle>Algrebra</CardTitle>
-                        <CardText>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, ut?</CardText>
-                    </Card>
-                </Col>
+                {myCourses.map(course => (
+                    <Col sm={4} key={course.type.code}>
+                        <Card body>
+
+                            <CardTitle>{course.type.name}</CardTitle>
+                            <CardText>{course.type.description}</CardText>
+
+                        </Card>
+                    </Col>
+
+                ))}
             </Row>
         </>
     )

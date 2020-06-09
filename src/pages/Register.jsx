@@ -18,7 +18,7 @@ import Navbar from '../components/Navbar'
 
 import useForm from '../hooks/useForm';
 import { doPost } from "../utils/apiRequestHandler";
-import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../dependencies/signup";
+import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../utils/dependencies";
 import { useHistory } from "react-router-dom";
 import Footer from '../components/Footer';
 
@@ -66,6 +66,12 @@ export default () => {
       return setAlert({ color: 'danger', message: res.message });
     }
     setAlert({ color: 'success', message: 'Registration successful' });
+    const token = res.results.auth_token;
+    localStorage.setItem('token', token);
+    // :TODO redirect to all courses page if course chosen has no teacher
+    // if (res.results.course_status && res.results.course_status === "drafted"){
+    //
+    // }
     history.push('dashboard');
   }
 

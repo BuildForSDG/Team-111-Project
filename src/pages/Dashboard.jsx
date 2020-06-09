@@ -4,8 +4,7 @@ import {
     Switch,
     Route,
     Link,
-    useRouteMatch,
-    useHistory
+    useRouteMatch, useHistory
 } from "react-router-dom";
 import Home from '../components/dashboard/Home';
 import Courses from '../components/dashboard/Courses';
@@ -19,6 +18,10 @@ export default () => {
     const logout = () => {
         auth.signout();
         history.push('/');
+    }
+
+    if (!auth.isAuthenticated){
+        history.push("login")
     }
 
     return (
