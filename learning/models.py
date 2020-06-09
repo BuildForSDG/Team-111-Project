@@ -112,7 +112,16 @@ class AcademicLevel(MongoModel, AppMixin):
     description = fields.CharField(required=False)
 
 
-class Course(MongoModel, AppMixin):
+class CourseType(MongoModel, AppMixin):
+    """
+    AccountType
+    """
+    name = fields.CharField(required=False)
+    code = fields.CharField(required=False, primary_key=True)
+    description = fields.CharField(required=False)
+
+
+class Status(MongoModel, AppMixin):
     """
     AccountType
     """
@@ -176,6 +185,7 @@ class ApplicationGroup(MongoModel, AppMixin):
 
 
 class Country(MongoModel, AppMixin):
+    """Country"""
     code = fields.CharField(required=True, primary_key=True, blank=False)
     name = fields.CharField(required=True, blank=False)
 
@@ -193,6 +203,7 @@ class User(MongoModel, AppMixin):
     phone = fields.CharField(required=False, blank=True)
     password = fields.CharField(required=False, blank=True)
     profiles = fields.EmbeddedDocumentListField(Profile, default=[], blank=True)
+    account_type = fields.ReferenceField(AccountType, required=False, blank=True)
     date_created = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
     last_updated = fields.DateTimeField(required=True, blank=False, default=datetime.utcnow)
 
@@ -305,3 +316,34 @@ class User(MongoModel, AppMixin):
             self.profiles.remove(profile)
         except ValueError as e:
             pass
+
+    @property
+    def courses(self):
+        """
+        Courses
+        """
+        return Course.objects.raw({"user_id": str(self.pk)})
+
+
+class Course(MongoModel, AppMixin):
+    """
+    Course
+    """
+    status = fields.ReferenceField(Status)
+    type = fields.ReferenceField(CourseType)
+    user = fields.ReferenceField(User)
+    user_data = fields.DictField()
+    user_id = fields.CharField()
+    teacher = fields.ReferenceField(User, required=False, blank=True)
+    date_created = fields.DateTimeField(default=datetime.utcnow)
+    last_updated = fields.DateTimeField(default=datetime.utcnow)
+
+    @property
+    def teacher_data(self):
+        """
+        For teacher data
+        """
+        print(self.teacher, "toooooooooooooooooooooooo", self.user.account_type)
+        teacher = self.user if self.user.account_type.code == "teacher" else self.teacher
+        return dict(name=teacher.name, pk=str(teacher.pk), _id=str(teacher.pk),
+                    email=teacher.email) if teacher else None

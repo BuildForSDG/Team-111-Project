@@ -16,7 +16,7 @@ class SignupResource(BaseResource):
     # to raise an error on get
     serializers = {
         "default": RegistrationSchema,
-        "response": UserResponseSchema
+        "response": AuthUserResponseSchema
     }
 
     def on_get(self, req, res, obj_id=None, resource_name=None):

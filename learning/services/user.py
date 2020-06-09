@@ -4,6 +4,8 @@ from learning.services.core import ApplicationService
 import dateutil.parser
 import re
 
+from learning.services.course import CourseService
+
 BaseUserService = ServiceFactory.create_service(User)
 
 
@@ -24,12 +26,20 @@ class UserService(BaseUserService):
         # Clean the data and set the password
 
         password = kwargs.pop("password")
-
+        account_type = kwargs.get("account_type")
         obj = cls.create(**kwargs)
 
         obj.set_password(password)
-
         AppRegisterService().make_profiles(user_id=str(obj.pk), **kwargs)
+        course_data = dict(user_data=cls.prepare_user_data(obj.pk), course_type=kwargs.get("subject"),
+                           account_type=account_type)
+        course = None
+        if account_type == "teacher":
+            course = CourseService.register(**course_data)
+        if account_type == "student":
+            course = CourseService.register_student(**course_data)
+        obj.course_status = course.status.code if course and course.status else None
+
         return obj
 
     @classmethod
@@ -110,6 +120,17 @@ class UserService(BaseUserService):
         obj.save()
 
         return obj
+
+    @classmethod
+    def prepare_user_data(cls, user_id, **kwargs):
+        """
+        UserId
+        """
+        user = cls.get(user_id)
+        return dict(name=user.name, pk=user.pk, _id=user.pk, email=user.email,
+                    academic_level=dict(name=user.academic_level.name, code=user.academic_level.code),
+                    phone=user.phone, account_type=dict(code=user.account_type.code,
+                                                                           name=user.account_type.name))
 
 
 # noinspection PyMethodMayBeStatic

@@ -8,8 +8,11 @@ from wsgiref import simple_server
 
 from learning.custom.middleware import *
 from learning.resources.core import CoreResource, core_serializers
+from learning.resources.course import CourseResource
 from learning.services.core import *
+from learning.services.course import CourseService
 from learning.services.user import *
+from learning.custom.restful import *
 from learning.resources.user import *
 from learning.resources.auth import *
 
@@ -31,7 +34,10 @@ profile = ProfileResource(UserService, ProfileResource.serializers)
 countries = CoreResource(CountryService, core_serializers, default_page_limit=200)
 account_types = CoreResource(AccountTypeService, core_serializers)
 academic_levels = CoreResource(AcademicLevelService, core_serializers)
-subjects = CoreResource(CourseService, core_serializers)
+subjects = CoreResource(CourseTypeService, core_serializers)
+available_courses = CourseResource(CourseService, CourseResource.serializers, limiter=available_courses_limiter)
+courses = CourseResource(CourseService, CourseResource.serializers)
+
 check_exists = CheckExistsResource(UserService, CheckExistsResource.serializers)
 register_api(app, login, '/login', prefix=settings.API_BASE)
 register_api(app, check_exists, '/check_exists', prefix=settings.API_BASE)
@@ -39,6 +45,8 @@ register_api(app, academic_levels, '/academic_levels', prefix=settings.API_BASE)
 register_api(app, account_types, '/account_types', prefix=settings.API_BASE)
 register_api(app, countries, '/countries', prefix=settings.API_BASE)
 register_api(app, subjects, '/subjects', prefix=settings.API_BASE)
+register_api(app, courses, '/courses', '/courses/{obj_id}', prefix=settings.API_BASE)
+register_api(app, available_courses, '/available_courses', '/available_courses/{obj_id}', prefix=settings.API_BASE)
 register_api(app, profile, '/profile', prefix=settings.API_BASE)
 register_api(app, signup, '/signup', prefix=settings.API_BASE)
 

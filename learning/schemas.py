@@ -128,7 +128,9 @@ class RegistrationSchema(Schema):
     account_type = _fields.String(required=False, allow_none=True)
     password = _fields.String(required=True, allow_none=False,
                               validate=validate.Length(min=6, error="Password can not be less than 6 characters"))
+    subject = _fields.String(required=False, allow_none=True)
     academic_level = _fields.String(required=False, allow_none=True)
+
     verify_password = _fields.String(required=False, allow_none=True)
 
     @post_load
@@ -170,17 +172,32 @@ class LoginSchema(Schema):
     password = _fields.String(required=True, allow_none=False)
 
 
+class CourseResponseSchema(Schema):
+    """
+    CourseResponseSchema
+    """
+    type = _fields.Nested(CoreResponseSchema)
+    user_id = _fields.String()
+    teacher_data = _fields.Dict()
+    # teacher = _fields.Nested(lambda: UserResponseSchema(only=("_id", "name")))
+    status = _fields.Nested(CoreResponseSchema)
+    date_created = _fields.Date()
+    last_updated = _fields.Date()
+
+
 class UserResponseSchema(Schema):
     """
     User Response Schema
     """
-    name = _fields.String(required=False, allow_none=True)
-    username = _fields.String(required=False, allow_none=True)
+    name = _fields.String(allow_none=True)
+    username = _fields.String(allow_none=True)
     email = _fields.Email(required=False, allow_none=True)
     country = _fields.Nested(CoreResponseSchema, required=False, allow_none=True, unknown=EXCLUDE)
-    phone = _fields.String(required=False, allow_none=True)
-    _id = _fields.String(required=False, allow_none=True)
-    pk = _fields.String(required=False, allow_none=True)
+    phone = _fields.String(allow_none=True)
+    _id = _fields.String(allow_none=True)
+    pk = _fields.String(allow_none=True)
+    course_status = _fields.String(allow_none=True)
+    courses = _fields.List(_fields.Nested(CourseResponseSchema))
 
 
 class DefaultResponseSchema(Schema):

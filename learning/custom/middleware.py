@@ -1,4 +1,5 @@
 import six
+from falcon.http_status import HTTPStatus
 from falcon.media import BaseHandler
 from six.moves.urllib.parse import parse_qs
 
@@ -139,27 +140,19 @@ class RequestResponseMiddleware(object):
         """
 
         res.set_header('Access-Control-Allow-Origin', '*')
-
-        if (req_succeeded
-                and req.method == 'OPTIONS'
-                and req.get_header('Access-Control-Request-Method')
-        ):
-            # NOTE(kgriffs): This is a CORS preflight request. Patch the
-            #   resonse accordingly.
-
-            allow = res.get_header('Allow')
+        if req.method == 'OPTIONS' and req.get_header('Access-Control-Request-Method'):
             res.delete_header('Allow')
-
             allow_headers = req.get_header(
                 'Access-Control-Request-Headers',
                 default='*'
             )
-
             res.set_headers((
-                ('Access-Control-Allow-Methods', allow),
-                ('Access-Control-Allow-Headers', allow_headers),
+                ('Access-Control-Allow-Methods', "*"),
+                ("Access-Control-Allow-Headers", "*"),
                 ('Access-Control-Max-Age', '86400'),  # 24 hours
             ))
+            if req.method == "OPTIONS":
+                raise HTTPStatus(falcon.HTTP_200, body='\n')
 
         # print "i still ran=========================="
         splitted = req.path.split("/")
