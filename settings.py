@@ -39,8 +39,6 @@ D = '{mongo_base}://{cred}{host}/{database}?retryWrites=true&w=majority'.format(
 
 DATABASE_URL = os.getenv("MONGODB_URI", D)
 
-print(DATABASE_URL, "modddddddddddddddddddddddddddddddd")
-
 API_BASE = os.getenv("API_BASE", "")
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "EOMEOMEMEE")
@@ -49,3 +47,6 @@ JWT_ISSUER_CLAIM = os.getenv("JWT_ISSUER_CLAIM", "backend.learning")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_EXPIRES_IN_HOURS = os.getenv("JWT_EXPIRES_IN_HOURS", 49)
 OPEN_APP = os.getenv("OPEN_APP", "True")
+
+
+####pushbranch toheroku git push -f heroku HEAD:master
