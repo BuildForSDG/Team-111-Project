@@ -5,6 +5,7 @@ import useForm from '../hooks/useForm';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar'
 import { useHistory } from "react-router-dom";
+import auth from '../auth';
 
 
 export default () => {
@@ -24,7 +25,7 @@ export default () => {
         setLoading(false);
         if (!`${res.reqStatus}`.match(/^20.$/)) return setAlert({ color: 'danger', message: res.message });
         const token = res.results.auth_token;
-        localStorage.setItem('token', token);
+        auth.authenticate(token);
         history.push('dashboard');
     }
 

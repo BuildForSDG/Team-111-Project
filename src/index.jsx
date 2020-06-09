@@ -3,18 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <Router>
-
-    <Switch>
-      <Route path="/" component={App} />
-    </Switch>
-
-  </Router>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')
 );
 
