@@ -8,7 +8,7 @@ export default () => {
 
     const logout = () => {
         auth.signout();
-        history.push('/');
+        history.push('/login');
     }
 
     return (
@@ -33,7 +33,7 @@ export default () => {
                                     <Link to={'/dashboard'} className="nav-link text-white">Dashboard</Link>
                                 </li>
                                 <li className="nav-item ml-4">
-                                    <a href="javascript:void(0);" onClick={logout} className="nav-link text-white">Logout</a>
+                                    <a href="#" onClick={logout} className="nav-link text-white">Logout</a>
                                 </li>
                             </ul>
                         )

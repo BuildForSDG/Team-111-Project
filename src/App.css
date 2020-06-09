@@ -42,3 +42,61 @@
   margin: 0 0 10px;
   border: 0;
 }
+
+.welcome .hgroup {
+  padding: 14rem 0 10rem;
+}
+
+.welcome .hgroup .title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.welcome .hgroup .subtitle {
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.welcome .hgroup .cta {
+  padding: 1rem 1.5rem;
+  background: #007bff;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  margin-top: 30px;
+  display: inline-block;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  transform-origin: left;
+}
+
+.welcome .hgroup .cta:hover {
+  background: #0168d5;
+  transform: scale(1.04);
+}
+
+.welcome .image {
+  padding: 7rem 0 5rem;
+}
+
+.welcome .image img {
+  border-radius: 4px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.footer {
+  width: 100%;
+  padding: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  background-color: rgb(21 31 50);
+  position: relative;
+  bottom: 0;
+  margin-top: 100px;
+}

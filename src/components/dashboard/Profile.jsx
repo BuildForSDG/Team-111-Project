@@ -39,44 +39,44 @@ export default () => {
                     <TabContent activeTab={activeTab}>
                         <TabPane tabId="1">
                             <Row>
-                                <ul class="list-group w-100">
-                                    <li class="list-group-item list-group-item-action w-100">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Jason Scars</h5>
+                                <ul className="list-group w-100">
+                                    <li className="list-group-item list-group-item-action w-100">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">Jason Scars</h5>
                                             <small>Edit</small>
                                         </div>
-                                        <p class="mb-0 text-warning">Full Name</p>
+                                        <p className="mb-0 text-warning">Full Name</p>
                                     </li>
-                                    <li class="list-group-item list-group-item-action w-100">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">jaysins@gmail.com</h5>
+                                    <li className="list-group-item list-group-item-action w-100">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">jaysins@gmail.com</h5>
                                             <small>Edit</small>
                                         </div>
-                                        <p class="mb-0 text-warning">Email Address</p>
+                                        <p className="mb-0 text-warning">Email Address</p>
                                     </li>
-                                    <li class="list-group-item list-group-item-action w-100">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">09032323434</h5>
+                                    <li className="list-group-item list-group-item-action w-100">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">09032323434</h5>
                                             <small>Edit</small>
                                         </div>
-                                        <p class="mb-0 text-warning">Phone Number</p>
+                                        <p className="mb-0 text-warning">Phone Number</p>
                                     </li>
-                                    <li class="list-group-item list-group-item-action w-100">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">Nigeria</h5>
+                                    <li className="list-group-item list-group-item-action w-100">
+                                        <div className="d-flex w-100 justify-content-between">
+                                            <h5 className="mb-1">Nigeria</h5>
                                             <small>Edit</small>
                                         </div>
-                                        <p class="mb-0 text-warning">Country</p>
+                                        <p className="mb-0 text-warning">Country</p>
                                     </li>
                                 </ul>
                             </Row>
                         </TabPane>
                         <TabPane tabId="2">
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between">Total courses <span>20</span></li>
-                                <li class="list-group-item d-flex justify-content-between">Total hours spent learning <span>200 hours</span></li>
-                                <li class="list-group-item d-flex justify-content-between">Number of courses started <span>14</span></li>
-                                <li class="list-group-item d-flex justify-content-between">Number of courses completed <span>2</span></li>
+                            <ul className="list-group">
+                                <li className="list-group-item d-flex justify-content-between">Total courses <span>20</span></li>
+                                <li className="list-group-item d-flex justify-content-between">Total hours spent learning <span>200 hours</span></li>
+                                <li className="list-group-item d-flex justify-content-between">Number of courses started <span>14</span></li>
+                                <li className="list-group-item d-flex justify-content-between">Number of courses completed <span>2</span></li>
                             </ul>
                         </TabPane>
                     </TabContent>

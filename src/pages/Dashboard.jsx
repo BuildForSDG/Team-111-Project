@@ -41,7 +41,7 @@ export default () => {
                                 <Link to={`${url}/profile`} className="nav-link text-white">Account</Link>
                             </li>
                             <li className="nav-item ml-4">
-                                <a href="javascript:void(0);" onClick={logout} className="nav-link text-white">Logout</a>
+                                <a href="#" onClick={logout} className="nav-link text-white">Logout</a>
                             </li>
                         </ul>
                     </div>
