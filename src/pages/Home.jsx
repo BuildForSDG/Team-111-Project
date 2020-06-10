@@ -21,7 +21,7 @@ export default () => {
                     </Col>
                     <Col sm="12" md="6">
                         <div className="image">
-                            <img src='/Dashboard.image/Dashboard 1 (1).png' className="img-fluid" alt="" />
+                            <img src='/images/hero.png' className="img-fluid" alt="Hero" />
                         </div>
                     </Col>
                 </Row>

@@ -14,8 +14,8 @@ export default () => {
     return (
         <nav className="navbar navbar-expand-lg navheader">
             <div className="collapse navbar-collapse" >
-                <Link to="/" className="mr-auto text-white display-5 font-italic font-weight-bolder	text-monospace col-sm-3 color-secondary">
-                    TeachersPlatform
+                <Link to="/" className="p-0 mr-auto text-white display-5 font-italic font-weight-bolder	text-monospace col-sm-3 color-secondary">
+                    <img className="logo" src="/images/logo.svg" alt=""/>
                 </Link>
                 {
                     !auth.isAuthenticated ? (

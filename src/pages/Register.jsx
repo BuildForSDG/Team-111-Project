@@ -222,8 +222,8 @@ export default () => {
                 </div>
                   <Row>
                     {academicLevels.map(academicLevel => (
-                      <Col md="6" key={academicLevel.code}>
-                        <Card className="cursor-pointer" onClick={() =>
+                      <Col md="12" key={academicLevel.code}>
+                        <Card className="cursor-pointer mb-4" onClick={() =>
                           setAcademicLevel(academicLevel.code)}>
                           <CardBody>
                             <CardTitle>{academicLevel.name}</CardTitle>
@@ -248,8 +248,8 @@ export default () => {
                 </div>
                   <Row>
                     {academicSubjects.map(academicSubject => (
-                      <Col md="6" key={academicSubject.code}>
-                        <Card className="cursor-pointer" onClick={() =>
+                      <Col md="12" key={academicSubject.code}>
+                        <Card className="cursor-pointer mb-4" onClick={() =>
                           setSubject(academicSubject.code)}>
                           <CardBody>
                             <CardTitle>{academicSubject.name}</CardTitle>
