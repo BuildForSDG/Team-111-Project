@@ -18,8 +18,9 @@ import Navbar from '../components/Navbar'
 
 import useForm from '../hooks/useForm';
 import { doPost } from "../utils/apiRequestHandler";
-import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../dependencies/signup";
+import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../utils/dependencies";
 import { useHistory } from "react-router-dom";
+import Footer from '../components/Footer';
 
 export default () => {
   const [accountTypes, setAccountTypes] = useState([]);
@@ -65,6 +66,12 @@ export default () => {
       return setAlert({ color: 'danger', message: res.message });
     }
     setAlert({ color: 'success', message: 'Registration successful' });
+    const token = res.results.auth_token;
+    localStorage.setItem('token', token);
+    // :TODO redirect to all courses page if course chosen has no teacher
+    // if (res.results.course_status && res.results.course_status === "drafted"){
+    //
+    // }
     history.push('dashboard');
   }
 
@@ -112,166 +119,169 @@ export default () => {
   }
 
   return (
-    <Container>
-      <Navbar />
-      <Row className="justify-content-center">
-        <Col md="9" lg="7" xl="6">
-          <Alert
-            isOpen={!!alert.message}
-            toggle={() => setAlert({ color: '', message: '' })}
-            color={alert.color || 'warning'}
-          >
-            {alert.message}
-          </Alert>
+    <>
+      <Container>
+        <Navbar />
+        <Row className="justify-content-center">
+          <Col md="9" lg="7" xl="6">
+            <Alert
+              isOpen={!!alert.message}
+              toggle={() => setAlert({ color: '', message: '' })}
+              color={alert.color || 'warning'}
+            >
+              {alert.message}
+            </Alert>
 
-          {
-            step === 1 &&
-            <Card>
-              <CardBody>
-                <div className="card-title font-weight-bold mb-5">
-                  Create your free account today!
+            {
+              step === 1 &&
+              <Card>
+                <CardBody>
+                  <div className="card-title font-weight-bold mb-5">
+                    Create your free account today!
                 </div>
-                <Form onSubmit={handleSubmit}>
-                  <InputGroup className="mb-2">
-                    <Input value={fields.name} name="name" type="text" onChange={handleChange}
-                      placeholder="Full name" required disabled={loading} />
-                  </InputGroup>
-                  <InputGroup className="mb-2">
-                    <Input value={fields.email} name="email" type="text" onChange={handleChange}
-                      placeholder="Email address" required disabled={loading} />
-                  </InputGroup>
-                  <InputGroup className="mb-2">
-                    <Input value={fields.password} name="password" type="password"
-                      onChange={handleChange} placeholder="Password" required
-                      disabled={loading} />
-                  </InputGroup>
-                  <InputGroup className="mb-2">
-                    <Input value={fields.username} name="username" type="text"
-                      onChange={handleChange} placeholder="Username" required
-                      disabled={loading} />
-                  </InputGroup>
-                  <InputGroup className="mb-2">
-                    <Input value={fields.phone} name="phone" type="text" onChange={handleChange}
-                      placeholder="Phone" required disabled={loading} />
-                  </InputGroup>
-                  <InputGroup className="mb-2">
-                    <Input type="select" value={fields.country_code} name="country_code" onChange={handleChange}>
-                      {
-                        countries.map(country => <option value={country.code} key={country.code}>{country.name}</option>)
-                      }
-                      {
-                        !countries.length && <option disabled>Loading</option>
-                      }
-                    </Input>
-                  </InputGroup>
-                  <Button type="submit" color="primary" size="lg" className="mt-5" disabled={loading}>
-                    Continue
+                  <Form onSubmit={handleSubmit}>
+                    <InputGroup className="mb-2">
+                      <Input value={fields.name} name="name" type="text" onChange={handleChange}
+                        placeholder="Full name" required disabled={loading} />
+                    </InputGroup>
+                    <InputGroup className="mb-2">
+                      <Input value={fields.email} name="email" type="text" onChange={handleChange}
+                        placeholder="Email address" required disabled={loading} />
+                    </InputGroup>
+                    <InputGroup className="mb-2">
+                      <Input value={fields.password} name="password" type="password"
+                        onChange={handleChange} placeholder="Password" required
+                        disabled={loading} />
+                    </InputGroup>
+                    <InputGroup className="mb-2">
+                      <Input value={fields.username} name="username" type="text"
+                        onChange={handleChange} placeholder="Username" required
+                        disabled={loading} />
+                    </InputGroup>
+                    <InputGroup className="mb-2">
+                      <Input value={fields.phone} name="phone" type="text" onChange={handleChange}
+                        placeholder="Phone" required disabled={loading} />
+                    </InputGroup>
+                    <InputGroup className="mb-2">
+                      <Input type="select" value={fields.country_code} name="country_code" onChange={handleChange}>
+                        {
+                          countries.map(country => <option value={country.code} key={country.code}>{country.name}</option>)
+                        }
+                        {
+                          !countries.length && <option disabled>Loading</option>
+                        }
+                      </Input>
+                    </InputGroup>
+                    <Button type="submit" color="primary" size="lg" className="mt-5" disabled={loading}>
+                      Continue
                   </Button>
 
-                  <p className='pt-3'>
-                    Already have an account? <Link to='/login'>Login here</Link>
-                  </p>
-                </Form>
-              </CardBody>
-            </Card>
-          }
-          {
-            step === 2 &&
-            <Card>
-              <CardBody>
-                <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
-                  Back
+                    <p className='pt-3'>
+                      Already have an account? <Link to='/login'>Login here</Link>
+                    </p>
+                  </Form>
+                </CardBody>
+              </Card>
+            }
+            {
+              step === 2 &&
+              <Card>
+                <CardBody>
+                  <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
+                    Back
                 </Button>
-                <div className="card-title font-weight-bold mb-5">
-                  Select the type of account you want to create
+                  <div className="card-title font-weight-bold mb-5">
+                    Select the type of account you want to create
                 </div>
 
-                <Row>
-                  {accountTypes.map(accountType => (
-                    <Col md="6" key={accountType.code}>
-                      <Card className="cursor-pointer" onClick={() =>
-                        setAccountType(accountType.code)}>
-                        <CardBody>
-                          <CardTitle>{accountType.name}</CardTitle>
-                          <CardSubtitle>{accountType.description}</CardSubtitle>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </CardBody>
-            </Card>
-          }
-          {
-            step === 3 &&
-            <Card>
-              <CardBody>
-                <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
-                  Back
+                  <Row>
+                    {accountTypes.map(accountType => (
+                      <Col md="6" key={accountType.code}>
+                        <Card className="cursor-pointer" onClick={() =>
+                          setAccountType(accountType.code)}>
+                          <CardBody>
+                            <CardTitle>{accountType.name}</CardTitle>
+                            <CardSubtitle>{accountType.description}</CardSubtitle>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </CardBody>
+              </Card>
+            }
+            {
+              step === 3 &&
+              <Card>
+                <CardBody>
+                  <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
+                    Back
                 </Button>
-                <div className="card-title font-weight-bold mb-5">
-                  Select your current academic level
+                  <div className="card-title font-weight-bold mb-5">
+                    Select your current academic level
                 </div>
-                <Row>
-                  {academicLevels.map(academicLevel => (
-                    <Col md="6" key={academicLevel.code}>
-                      <Card className="cursor-pointer" onClick={() =>
-                        setAcademicLevel(academicLevel.code)}>
-                        <CardBody>
-                          <CardTitle>{academicLevel.name}</CardTitle>
-                          <CardSubtitle>{academicLevel.description}</CardSubtitle>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </CardBody>
-            </Card>
-          }
-          {
-            step === 4 &&
-            <Card>
-              <CardBody>
-                <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
-                  Back
+                  <Row>
+                    {academicLevels.map(academicLevel => (
+                      <Col md="12" key={academicLevel.code}>
+                        <Card className="cursor-pointer mb-4" onClick={() =>
+                          setAcademicLevel(academicLevel.code)}>
+                          <CardBody>
+                            <CardTitle>{academicLevel.name}</CardTitle>
+                            <CardSubtitle>{academicLevel.description}</CardSubtitle>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </CardBody>
+              </Card>
+            }
+            {
+              step === 4 &&
+              <Card>
+                <CardBody>
+                  <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
+                    Back
                 </Button>
-                <div className="card-title font-weight-bold mb-5">
-                  Select your preferred subject
+                  <div className="card-title font-weight-bold mb-5">
+                    Select your preferred subject
                 </div>
-                <Row>
-                  {academicSubjects.map(academicSubject => (
-                    <Col md="6" key={academicSubject.code}>
-                      <Card className="cursor-pointer" onClick={() =>
-                        setSubject(academicSubject.code)}>
-                        <CardBody>
-                          <CardTitle>{academicSubject.name}</CardTitle>
-                          <CardSubtitle>{academicSubject.description}</CardSubtitle>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </CardBody>
-            </Card>
-          }
-          {
-            step === 5 &&
-            <Card>
-              <CardBody>
-                <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
-                  Back
+                  <Row>
+                    {academicSubjects.map(academicSubject => (
+                      <Col md="12" key={academicSubject.code}>
+                        <Card className="cursor-pointer mb-4" onClick={() =>
+                          setSubject(academicSubject.code)}>
+                          <CardBody>
+                            <CardTitle>{academicSubject.name}</CardTitle>
+                            <CardSubtitle>{academicSubject.description}</CardSubtitle>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </CardBody>
+              </Card>
+            }
+            {
+              step === 5 &&
+              <Card>
+                <CardBody>
+                  <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
+                    Back
                 </Button>
-                <div className="card-title font-weight-bold mb-5">
-                  Finally..
+                  <div className="card-title font-weight-bold mb-5">
+                    Finally..
                 </div>
-                <Button onClick={register} color="primary" size="lg" className="mt-5" disabled={loading}>
-                  Create Account
+                  <Button onClick={register} color="primary" size="lg" className="mt-5" disabled={loading}>
+                    Create Account
                 </Button>
-              </CardBody>
-            </Card>
-          }
-        </Col>
-      </Row>
-    </Container>
+                </CardBody>
+              </Card>
+            }
+          </Col>
+        </Row>
+      </Container>
+      <Footer />
+    </>
   );
 }

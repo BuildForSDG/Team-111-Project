@@ -31,26 +31,38 @@ const doPost = async (path, data) => {
 }
 const doGet = async (path) => {
     let response = {};
+    const token = localStorage.getItem("token");
     try {
         await axios({
             method: 'GET',
-            url: `${settings.BACKEND_BASE_URL}/${path}`
+            url: `${settings.BACKEND_BASE_URL}/${path}`,
+            headers: { "authorization": token}
+            // headers
         }).then((res) => {
             console.log(res);
             console.log(res.data)
-            response.results = res.data.results;
+
+            /// hurry hurry toupdate thiswhen calme
+            if (res.data.results){
+                response.results = res.data.results;
+            }
+            else {
+                response.results = res.data
+            }
             response.reqStatus = res.status
         });
     } catch (error) {
         if (!error.response) {
             response.reqStatus = "500";
             response.message = "internal server error"
+            response.results = [];
         } else {
             console.log(error.response)
             response.reqStatus = error.response.status
             for (const message in error.response.data) {
                 // noinspection JSUnfilteredForInLoop
                 response.message = error.response.data[message][0];
+                response.results = [];
 
             }
         }
