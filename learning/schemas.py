@@ -178,6 +178,8 @@ class CourseResponseSchema(Schema):
     """
     type = _fields.Nested(CoreResponseSchema)
     user_id = _fields.String()
+    _id = _fields.String()
+    pk = _fields.String()
     teacher_data = _fields.Dict()
     # teacher = _fields.Nested(lambda: UserResponseSchema(only=("_id", "name")))
     status = _fields.Nested(CoreResponseSchema)
