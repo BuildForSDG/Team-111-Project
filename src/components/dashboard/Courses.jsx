@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane } from 'reactstrap';
+import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
 import { Link, useRouteMatch } from 'react-router-dom'
@@ -65,6 +65,13 @@ export default () => {
                     </Row>
                 </TabPane>
                 <TabPane tabId="2">
+                    <div className="d-flex justify-content-end">
+                        <Link to={`${url}/add`}>
+                            <Button className="mb-4" outline type="button" color="primary">
+                                Add new course
+                            </Button>
+                        </Link>
+                    </div>
                     <Row>
                         {myCourses.map(course => (
                             <Col sm={4} key={course.type.code}>

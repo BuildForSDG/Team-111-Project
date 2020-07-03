@@ -11,6 +11,7 @@ import Courses from '../components/dashboard/Courses';
 import Profile from '../components/dashboard/Profile';
 import auth from '../auth';
 import CourseDetails from '../components/dashboard/CourseDetails';
+import AddCourse from '../components/dashboard/AddCourse';
 
 export default () => {
     let { path, url } = useRouteMatch();
@@ -54,6 +55,7 @@ export default () => {
                     <Switch>
                         <Route path={`${path}/`} exact><Home /></Route>
                         <Route path={`${path}/courses`} exact><Courses /></Route>
+                        <Route path={`${path}/courses/add`} exact><AddCourse /></Route>
                         <Route path={`${path}/courses/:id`} exact><CourseDetails /></Route>
                         <Route path={`${path}/profile`} exact><Profile /></Route>
                     </Switch>

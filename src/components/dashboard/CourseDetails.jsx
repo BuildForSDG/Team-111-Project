@@ -38,7 +38,7 @@ export default () => {
                 <div className="accordion" id="accordion">
                     {
                         topics.map(topic => (
-                            <div className="card course-card">
+                            <div className="card course-card hover">
                                 <div className="card-header" id={`heading${topic._id}`}>
                                     <h2 className="mb-0">
                                         <button className="btn btn-link btn-block text-left"
