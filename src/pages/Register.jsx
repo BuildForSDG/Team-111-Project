@@ -18,13 +18,12 @@ import Navbar from '../components/Navbar'
 
 import useForm from '../hooks/useForm';
 import { doPost } from "../utils/apiRequestHandler";
-import { getAcademicLevels, getAcademicSubjects, getAccountTypes, getCountries } from "../utils/dependencies";
+import { getAcademicSubjects, getAccountTypes, getCountries } from "../utils/dependencies";
 import { useHistory } from "react-router-dom";
 import Footer from '../components/Footer';
 
 export default () => {
   const [accountTypes, setAccountTypes] = useState([]);
-  const [academicLevels, setAcademicLevels] = useState([]);
   const [countries, setCountries] = useState([]);
   const [academicSubjects, setAcademicSubjects] = useState([]);
 
@@ -48,10 +47,9 @@ export default () => {
 
   useEffect(() => {
     if (accountTypes.length < 1) getAccountTypes().then(results => setAccountTypes(results));
-    if (academicLevels.length < 1) getAcademicLevels().then(results => setAcademicLevels(results));
     if (academicSubjects.length < 1) getAcademicSubjects().then(results => setAcademicSubjects(results));
     if (countries.length < 1) getCountries().then(results => setCountries(results));
-  }, [accountTypes, academicLevels, academicSubjects, countries]);
+  }, [accountTypes, academicSubjects, countries]);
 
   const register = async () => {
     setAlert({ color: '', message: '' });
@@ -103,18 +101,11 @@ export default () => {
     setStep(3)
   };
 
-  const setAcademicLevel = (value) => {
-    const found = academicLevels.some(el => el.code === value.toLowerCase());
-    if (!found) return
-    setField('academic_level', value);
-    setStep(4);
-  }
-
   const setSubject = (value) => {
     const found = academicSubjects.some(el => el.code === value.toLowerCase());
     if (found) {
       setField('subject', value);
-      setStep(5);
+      setStep(4);
     }
   }
 
@@ -218,32 +209,6 @@ export default () => {
                     Back
                 </Button>
                   <div className="card-title font-weight-bold mb-5">
-                    Select your current academic level
-                </div>
-                  <Row>
-                    {academicLevels.map(academicLevel => (
-                      <Col md="12" key={academicLevel.code}>
-                        <Card className="cursor-pointer mb-4" onClick={() =>
-                          setAcademicLevel(academicLevel.code)}>
-                          <CardBody>
-                            <CardTitle>{academicLevel.name}</CardTitle>
-                            <CardSubtitle>{academicLevel.description}</CardSubtitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                </CardBody>
-              </Card>
-            }
-            {
-              step === 4 &&
-              <Card>
-                <CardBody>
-                  <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
-                    Back
-                </Button>
-                  <div className="card-title font-weight-bold mb-5">
                     Select your preferred subject
                 </div>
                   <Row>
@@ -263,7 +228,7 @@ export default () => {
               </Card>
             }
             {
-              step === 5 &&
+              step === 4 &&
               <Card>
                 <CardBody>
                   <Button type="button" color="secondary" outline size="sm" className="mb-5" disabled={loading} onClick={() => goBack()}>
