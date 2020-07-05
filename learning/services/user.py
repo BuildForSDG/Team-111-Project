@@ -128,9 +128,9 @@ class UserService(BaseUserService):
         """
         user = cls.get(user_id)
         return dict(name=user.name, pk=user.pk, _id=user.pk, email=user.email,
-                    academic_level=dict(name=user.academic_level.name, code=user.academic_level.code),
+                    # academic_level=dict(name=user.academic_level.name, code=user.academic_level.code),
                     phone=user.phone, account_type=dict(code=user.account_type.code,
-                                                                           name=user.account_type.name))
+                                                        name=user.account_type.name))
 
 
 # noinspection PyMethodMayBeStatic

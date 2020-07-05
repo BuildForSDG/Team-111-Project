@@ -325,6 +325,12 @@ class User(MongoModel, AppMixin):
         return Course.objects.raw({"user_id": str(self.pk)})
 
 
+class Quiz(EmbeddedMongoModel, AppMixin):
+    """
+    Quiz
+    """
+
+
 class Course(MongoModel, AppMixin):
     """
     Course
@@ -335,6 +341,7 @@ class Course(MongoModel, AppMixin):
     user_data = fields.DictField()
     user_id = fields.CharField()
     teacher = fields.ReferenceField(User, required=False, blank=True)
+
     date_created = fields.DateTimeField(default=datetime.utcnow)
     last_updated = fields.DateTimeField(default=datetime.utcnow)
 
@@ -347,3 +354,18 @@ class Course(MongoModel, AppMixin):
         teacher = self.user if self.user.account_type.code == "teacher" else self.teacher
         return dict(name=teacher.name, pk=str(teacher.pk), _id=str(teacher.pk),
                     email=teacher.email) if teacher else None
+
+
+class Syllabus(EmbeddedMongoModel):
+    """
+    class (EmbeddedMongoModel):
+    """
+
+    name = fields.CharField(required=False, blank=True)
+    description = fields.CharField(required=False, blank=True)
+    video_url = fields.CharField(required=False, blank=True)
+    quizzes = fields.EmbeddedDocumentListField(Quiz, required=False, blank=True)
+    course = fields.ReferenceField(Course, required=False, blank=True)
+    user = fields.ReferenceField(User, required=False, blank=True)
+    user_id = fields.CharField(required=False, blank=True)
+    course_id = fields.CharField(required=False, blank=True)

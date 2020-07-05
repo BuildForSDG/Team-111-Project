@@ -125,10 +125,10 @@ class RegistrationSchema(Schema):
     email = _fields.Email(required=False, allow_none=True, validate=EmailExistsValidator())
     country_code = _fields.String(required=True, allow_none=False, validate=CountryCodeValidator())
     phone = _fields.String(required=True, allow_none=False)
-    account_type = _fields.String(required=False, allow_none=True)
+    account_type = _fields.String(required=True, allow_none=False)
     password = _fields.String(required=True, allow_none=False,
                               validate=validate.Length(min=6, error="Password can not be less than 6 characters"))
-    subject = _fields.String(required=False, allow_none=True)
+    subject = _fields.String(required=True, allow_none=False)
     academic_level = _fields.String(required=False, allow_none=True)
 
     verify_password = _fields.String(required=False, allow_none=True)
@@ -142,9 +142,9 @@ class RegistrationSchema(Schema):
             data {dict} -- data that has been successfully loaded after validation
         """
 
-        print(data.get("academic_level"), "tjeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-              AcademicLevel.objects.raw({"code": data.get("academic_level")}).count())
-        if AcademicLevel.objects.raw({"_id": data.get("academic_level")}).count() < 1:
+        print(data.get("academic_level"), "tjeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        academic_level = data.get("academic_level")
+        if academic_level and AcademicLevel.objects.raw({"_id": academic_level}).count() < 1:
             data["academic_level"] = None
         return helpers.prepare_user_data(data)
 
@@ -195,6 +195,7 @@ class UserResponseSchema(Schema):
     username = _fields.String(allow_none=True)
     email = _fields.Email(required=False, allow_none=True)
     country = _fields.Nested(CoreResponseSchema, required=False, allow_none=True, unknown=EXCLUDE)
+    account_type = _fields.Nested(CoreResponseSchema, required=False, allow_none=True, unknown=EXCLUDE)
     phone = _fields.String(allow_none=True)
     _id = _fields.String(allow_none=True)
     pk = _fields.String(allow_none=True)

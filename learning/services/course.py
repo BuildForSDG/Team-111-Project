@@ -27,7 +27,7 @@ class CourseService(BaseCourseService):
         course_type = kwargs.get("course_type")
         user_data = kwargs.get("user_data")
         user_id = user_data.get("pk")
-        course = dict(type=course_type, user=user_id, user_id=user_id, user_data=user_data, status="active")
+        course = dict(type=course_type, user=user_id, user_id=user_id, user_data=user_data, status="pending")
         return cls.create(**course)
 
     @classmethod
@@ -46,7 +46,8 @@ class CourseService(BaseCourseService):
         pprint(course)
         return cls.create(**course)
 
-
-
-
-
+    @classmethod
+    def update_course(cls, obj_id, **kwargs):
+        """
+        UpdateCourse
+        """
