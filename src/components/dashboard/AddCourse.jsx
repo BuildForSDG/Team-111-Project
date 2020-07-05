@@ -13,6 +13,10 @@ export default () => {
         setTopics([...topics, { _id: topics.length + 1, title: '', details: '' }])
     }
 
+    const deleteTopic = (id) => {
+        setTopics([...topics.splice(id, 1)])
+    }
+
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mb-5">
@@ -45,12 +49,15 @@ export default () => {
                                     <Label for="exampleText">Details</Label>
                                     <Input type="textarea" value={topics[i].details} onChange={(e) => { topics[i].details = e.target.value }} />
                                 </FormGroup>
+                                <Button type="button" color="danger" outline size="sm"  onClick={() => deleteTopic(i)}>
+                                    Delete
+                                </Button>
                             </div>
                         </div>
                     ))
                 }
                 <Button className="mb-4" outline type="button" color="primary" onClick={addTopic}>
-                    Add new course
+                    Add Topic
                 </Button>
             </div>
         </>
