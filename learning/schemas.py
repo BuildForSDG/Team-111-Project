@@ -172,6 +172,32 @@ class LoginSchema(Schema):
     password = _fields.String(required=True, allow_none=False)
 
 
+class SyllabusRequestSchema(Schema):
+    """
+    SyllabusRequestSchema
+    """
+    title = _fields.String()
+    description = _fields.String()
+    video_url = _fields.String()
+
+
+class CourseRequestSchema(Schema):
+    """
+    CourseRequest
+    """
+    description = _fields.String(required=True, allow_none=False)
+    name = _fields.String(required=True, allow_none=False)
+    syllabus = _fields.Nested(SyllabusRequestSchema, many=True, required=False, allow_none=True)
+
+    @post_load
+    def prepare_payload(self, data, **kwargs):
+        """
+        Prep
+        """
+        data["course_type"] = data.get("name")
+        return data
+
+
 class CourseResponseSchema(Schema):
     """
     CourseResponseSchema
@@ -183,6 +209,7 @@ class CourseResponseSchema(Schema):
     teacher_data = _fields.Dict()
     # teacher = _fields.Nested(lambda: UserResponseSchema(only=("_id", "name")))
     status = _fields.Nested(CoreResponseSchema)
+    syllabus = _fields.Nested(SyllabusRequestSchema, many=True)
     date_created = _fields.Date()
     last_updated = _fields.Date()
 
@@ -266,3 +293,4 @@ class BlankSchema(Schema):
     """
 
     """
+

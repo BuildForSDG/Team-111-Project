@@ -335,9 +335,10 @@ class Course(MongoModel, AppMixin):
     """
     Course
     """
-    status = fields.ReferenceField(Status)
-    type = fields.ReferenceField(CourseType)
-    user = fields.ReferenceField(User)
+
+    status = fields.ReferenceField(Status, required=False, blank=True)
+    type = fields.ReferenceField(CourseType, required=False, blank=True)
+    user = fields.ReferenceField(User, required=False, blank=True)
     user_data = fields.DictField()
     user_id = fields.CharField()
     teacher = fields.ReferenceField(User, required=False, blank=True)
@@ -355,13 +356,20 @@ class Course(MongoModel, AppMixin):
         return dict(name=teacher.name, pk=str(teacher.pk), _id=str(teacher.pk),
                     email=teacher.email) if teacher else None
 
+    @property
+    def syllabus(self):
+        """
+        syllabus_data
+        """
+        return Syllabus.objects.raw({"course": self.pk})
 
-class Syllabus(EmbeddedMongoModel):
+
+class Syllabus(AppMixin, MongoModel):
     """
     class (EmbeddedMongoModel):
     """
 
-    name = fields.CharField(required=False, blank=True)
+    title = fields.CharField(required=False, blank=True)
     description = fields.CharField(required=False, blank=True)
     video_url = fields.CharField(required=False, blank=True)
     quizzes = fields.EmbeddedDocumentListField(Quiz, required=False, blank=True)

@@ -93,7 +93,8 @@ class BaseResource(object):
         pro = getattr(obj, "user", None)
         pro_id = getattr(obj, "user_id", None)
         _id = getattr(obj, "_id", None)
-        pk = user_context.get("user", {}).get("id")
+        pk = user_context.uuid
+        print("peeeeeeeee", pk,pro_id)
         if pro and str(pro.pk) == str(pk) or str(pro_id) == str(pk) or str(_id) == str(pk):
             return obj
         raise falcon.HTTPError('401 ', title='Unauthorized', description="You are not permitted to view this object",
