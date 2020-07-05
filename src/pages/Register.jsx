@@ -102,7 +102,7 @@ export default () => {
   };
 
   const setSubject = (value) => {
-    const found = academicSubjects.some(el => el.code === value.toLowerCase());
+    const found = academicSubjects.some(el => el.type.code === value.toLowerCase());
     if (found) {
       setField('subject', value);
       setStep(4);
@@ -213,12 +213,12 @@ export default () => {
                 </div>
                   <Row>
                     {academicSubjects.map(academicSubject => (
-                      <Col md="12" key={academicSubject.code}>
+                      <Col md="12" key={academicSubject.type.code}>
                         <Card className="cursor-pointer mb-4" onClick={() =>
-                          setSubject(academicSubject.code)}>
+                          setSubject(academicSubject.type.code)}>
                           <CardBody>
-                            <CardTitle>{academicSubject.name}</CardTitle>
-                            <CardSubtitle>{academicSubject.description}</CardSubtitle>
+                            <CardTitle>{academicSubject.type.name}</CardTitle>
+                            <CardSubtitle>{academicSubject.type.description}</CardSubtitle>
                           </CardBody>
                         </Card>
                       </Col>

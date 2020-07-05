@@ -12,7 +12,7 @@ const getAcademicLevels = async () => {
 };
 
 const getAcademicSubjects = async () => {
-    const res = await doGet('subjects');
+    const res = await doGet('available_courses');
     return res.results;
 };
 
