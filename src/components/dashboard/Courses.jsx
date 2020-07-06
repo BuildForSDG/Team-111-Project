@@ -93,7 +93,7 @@ export default () => {
                     }
                     <Row>
                         {myCourses.map(course => (
-                            <Col sm={4} key={course.type.code}>
+                            <Col sm={4} key={course.type.code} className="mb-4">
                                 <Card body>
                                     <CardTitle>{course.type.name}</CardTitle>
                                     <CardText>{course.type.description}</CardText>
