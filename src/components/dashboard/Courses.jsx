@@ -3,12 +3,15 @@ import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent,
 import classnames from 'classnames';
 import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
 import { Link, useRouteMatch } from 'react-router-dom'
+import { useContext } from 'react';
+import AppContext from '../../context';
 
 export default () => {
     let { url } = useRouteMatch();
     const [activeTab, setActiveTab] = useState('1');
     const [availableCourses, setAvailableCourses] = useState([]);
     const [myCourses, setMyCourses] = useState([]);
+    const { state } = useContext(AppContext);
 
     useEffect(() => {
         if (availableCourses.length < 1) getAvailableCourses().then(results => setAvailableCourses(results));
@@ -50,7 +53,7 @@ export default () => {
                 <TabPane tabId="1">
                     <Row>
                         {availableCourses.map(course => (
-                            <Col sm={4}>
+                            <Col sm={4} key={course._id}>
                                 <Link to={`${url}/${course._id}`}>
                                     <Card className="mb-4" key={course.type.code} body>
                                         <CardTitle>
@@ -65,13 +68,17 @@ export default () => {
                     </Row>
                 </TabPane>
                 <TabPane tabId="2">
-                    <div className="d-flex justify-content-end">
-                        <Link to={`${url}/add`}>
-                            <Button className="mb-4" outline type="button" color="primary">
-                                Add new course
-                            </Button>
-                        </Link>
-                    </div>
+                    {
+                        state && state.user.account_type.code === 'teacher' && (
+                            <div className="d-flex justify-content-end">
+                                <Link to={`${url}/add`}>
+                                    <Button className="mb-4" outline type="button" color="primary">
+                                        Add new course
+                                    </Button>
+                                </Link>
+                            </div>
+                        )
+                    }
                     <Row>
                         {myCourses.map(course => (
                             <Col sm={4} key={course.type.code}>
