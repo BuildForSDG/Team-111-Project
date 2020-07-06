@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button } from 'reactstrap';
 import classnames from 'classnames';
 import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
 import { useContext } from 'react';
 import AppContext from '../../context';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 export default () => {
     let { url } = useRouteMatch();
@@ -12,6 +16,13 @@ export default () => {
     const [availableCourses, setAvailableCourses] = useState([]);
     const [myCourses, setMyCourses] = useState([]);
     const { state } = useContext(AppContext);
+    const query = useQuery();
+    const history = useHistory();
+
+    useEffect(() => {
+        const tab = query.get('tab');
+        if (tab && tab.match(/1|2/gi)) setActiveTab(`${tab}`);
+    }, [query]);
 
     useEffect(() => {
         if (availableCourses.length < 1) getAvailableCourses().then(results => setAvailableCourses(results));
@@ -19,8 +30,9 @@ export default () => {
     }, [availableCourses, myCourses]);
 
     const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab);
+        history.push(`/dashboard/courses?tab=${tab}`)
     }
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between">

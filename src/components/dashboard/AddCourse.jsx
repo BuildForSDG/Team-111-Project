@@ -35,7 +35,7 @@ export default () => {
     const handleSubmit = async () => {
         setLoading(true);
         const syllabus = topics.map(topic => ({ title: topic.title, description: topic.details }));
-        await doPost('/courses', { name: title, description, syllabus });
+        await doPost('/courses?tab=2', { name: title, description, syllabus });
         setLoading(false);
         history.goBack();
     }
