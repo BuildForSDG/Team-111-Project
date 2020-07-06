@@ -65,9 +65,9 @@ export default () => {
                 <TabPane tabId="1">
                     <Row>
                         {availableCourses.map(course => (
-                            <Col sm={4} key={course._id}>
-                                <Link to={`${url}/${course._id}`}>
-                                    <Card className="mb-4" key={course.type.code} body>
+                            <Col sm={4} key={course._id} className="mb-4">
+                                <Link to={`${url}/${course._id}`} className="d-flex h-100">
+                                    <Card className="h-100" key={course.type.code} body>
                                         <CardTitle>
                                             {course.type.name}
                                             <br /><small className="text-info">{course.teacher_data.name}</small>
@@ -94,10 +94,12 @@ export default () => {
                     <Row>
                         {myCourses.map(course => (
                             <Col sm={4} key={course.type.code} className="mb-4">
-                                <Card body>
-                                    <CardTitle>{course.type.name}</CardTitle>
-                                    <CardText>{course.type.description}</CardText>
-                                </Card>
+                                <Link to={`${url}/${course._id}`} className="d-flex h-100">
+                                    <Card body className="h-100">
+                                        <CardTitle>{course.type.name}</CardTitle>
+                                        <CardText>{course.type.description}</CardText>
+                                    </Card>
+                                </Link>
                             </Col>
                         ))}
                     </Row>
