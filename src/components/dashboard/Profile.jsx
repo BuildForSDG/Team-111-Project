@@ -72,7 +72,6 @@ export default () => {
                                     <li className="list-group-item list-group-item-action w-100">
                                         <div className="d-flex w-100 justify-content-between">
                                             <h5 className="mb-1">NG</h5>
-                                            {/*<h5 className="mb-1">{state.user.country.code}</h5>*/}
                                             <small>Edit</small>
                                         </div>
                                         <p className="mb-0 text-warning">Country</p>
