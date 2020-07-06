@@ -1,35 +1,30 @@
-import React, {useEffect, useState} from 'react';
-import {Row, Col, Nav, NavLink, NavItem, TabContent, TabPane} from 'reactstrap';
+import React, { useState } from 'react';
+import { Row, Col, Nav, NavLink, NavItem, TabContent, TabPane } from 'reactstrap';
 import classnames from 'classnames';
-import {getProfile} from "../../utils/dependencies";
+import { useContext } from 'react';
+import AppContext from '../../context';
 
 export default () => {
+    const { state } = useContext(AppContext);
     const [activeTab, setActiveTab] = useState('1');
-    const [profile, setProfile] = useState(false);
 
     const toggle = tab => {
         if (activeTab !== tab) setActiveTab(tab);
     }
-    useEffect(() => {
-            console.log(profile, "the profile here")
-            if (!profile) getProfile().then(results => {
-                console.log(results);
-                setProfile(results)});
-        }, [profile])
 
     return (
         <>
             <div className="d-flex align-items-center justify-content-between">
                 <h4 className="px-2">Account</h4>
             </div>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <Row>
                 <Col md="4">
                     <Nav tabs pills vertical>
                         <NavItem>
                             <NavLink
-                                className={classnames({active: activeTab === '1'})}
+                                className={classnames({ active: activeTab === '1' })}
                                 onClick={() => {
                                     toggle('1');
                                 }}
@@ -38,7 +33,7 @@ export default () => {
                         </NavItem>
                         <NavItem>
                             <NavLink
-                                className={classnames({active: activeTab === '2'})}
+                                className={classnames({ active: activeTab === '2' })}
                                 onClick={() => {
                                     toggle('2');
                                 }}
@@ -55,21 +50,21 @@ export default () => {
                                 <ul className="list-group w-100">
                                     <li className="list-group-item list-group-item-action w-100">
                                         <div className="d-flex w-100 justify-content-between">
-                                            <h5 className="mb-1">{profile.name}</h5>
+                                            <h5 className="mb-1">{state.user.name}</h5>
                                             <small>Edit</small>
                                         </div>
                                         <p className="mb-0 text-warning">Full Name</p>
                                     </li>
                                     <li className="list-group-item list-group-item-action w-100">
                                         <div className="d-flex w-100 justify-content-between">
-                                            <h5 className="mb-1">{profile.email}</h5>
+                                            <h5 className="mb-1">{state.user.email}</h5>
                                             <small>Edit</small>
                                         </div>
                                         <p className="mb-0 text-warning">Email Address</p>
                                     </li>
                                     <li className="list-group-item list-group-item-action w-100">
                                         <div className="d-flex w-100 justify-content-between">
-                                            <h5 className="mb-1">{profile.phone}</h5>
+                                            <h5 className="mb-1">{state.user.phone}</h5>
                                             <small>Edit</small>
                                         </div>
                                         <p className="mb-0 text-warning">Phone Number</p>
@@ -77,7 +72,7 @@ export default () => {
                                     <li className="list-group-item list-group-item-action w-100">
                                         <div className="d-flex w-100 justify-content-between">
                                             <h5 className="mb-1">NG</h5>
-                                            {/*<h5 className="mb-1">{profile.country.code}</h5>*/}
+                                            {/*<h5 className="mb-1">{state.user.country.code}</h5>*/}
                                             <small>Edit</small>
                                         </div>
                                         <p className="mb-0 text-warning">Country</p>
@@ -92,9 +87,9 @@ export default () => {
                                 <li className="list-group-item d-flex justify-content-between">Total hours spent
                                     learning <span>200 hours</span></li>
                                 <li className="list-group-item d-flex justify-content-between">Number of courses
-                                    started <span>{profile.number_of_courses_started}</span></li>
+                                    started <span>{state.user.number_of_courses_started}</span></li>
                                 <li className="list-group-item d-flex justify-content-between">Number of courses
-                                    completed <span>{profile.number_of_courses_completed}</span></li>
+                                    completed <span>{state.user.number_of_courses_completed}</span></li>
                             </ul>
                         </TabPane>
                     </TabContent>

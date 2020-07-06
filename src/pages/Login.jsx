@@ -7,20 +7,16 @@ import Navbar from '../components/Navbar'
 import { useHistory } from "react-router-dom";
 import auth from '../auth';
 import Footer from '../components/Footer';
+import { useContext } from 'react';
+import AppContext from '../context';
 
 
 export default () => {
+    const history = useHistory();
+    const { dispatch } = useContext(AppContext);
     const [loading, setLoading] = useState(false);
     const [alert, setAlert] = useState({ color: '', message: '' });
-    const [fields, handleChange] = useForm({
-        username: '',
-        password: '',
-    });
-    let history = useHistory();
-
-    // if (localStorage.getItem("token")){
-    //     history.push("dashboard")
-    // }
+    const [fields, handleChange] = useForm({ username: '', password: '', });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,6 +26,7 @@ export default () => {
         setLoading(false);
         if (!`${res.reqStatus}`.match(/^20.$/)) return setAlert({ color: 'danger', message: res.message });
         const token = res.results.auth_token;
+        dispatch({ type: 'SET_USER', payload: res.results });
         auth.authenticate(token);
         history.push('dashboard');
     }
