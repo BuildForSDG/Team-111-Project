@@ -1,14 +1,15 @@
 import axios from "axios";
 import settings from "../settings";
 
-
 const doPost = async (path, data) => {
     let response = {};
+    const token = localStorage.getItem("token");
     try {
         await axios({
             method: 'POST',
             url: `${settings.BACKEND_BASE_URL}/${path}`,
-            data: data
+            data: data,
+            headers: { "authorization": token }
         }).then((res) => {
             response.results = res.data;
             response.reqStatus = res.status
@@ -18,12 +19,9 @@ const doPost = async (path, data) => {
             response.reqStatus = "500";
             response.message = "internal server error"
         } else {
-            console.log(error.response)
             response.reqStatus = error.response.status
             for (const message in error.response.data) {
-                // noinspection JSUnfilteredForInLoop
                 response.message = error.response.data[message][0];
-
             }
         }
     }
@@ -36,14 +34,9 @@ const doGet = async (path) => {
         await axios({
             method: 'GET',
             url: `${settings.BACKEND_BASE_URL}/${path}`,
-            headers: { "authorization": token}
-            // headers
+            headers: { "authorization": token }
         }).then((res) => {
-            console.log(res);
-            console.log(res.data)
-
-            /// hurry hurry toupdate thiswhen calme
-            if (res.data.results){
+            if (res.data.results) {
                 response.results = res.data.results;
             }
             else {
@@ -60,16 +53,14 @@ const doGet = async (path) => {
             console.log(error.response)
             response.reqStatus = error.response.status
             for (const message in error.response.data) {
-                // noinspection JSUnfilteredForInLoop
                 response.message = error.response.data[message][0];
                 response.results = [];
-
             }
         }
     }
     return response;
 }
 
-export {doPost, doGet}
+export { doPost, doGet }
 
 

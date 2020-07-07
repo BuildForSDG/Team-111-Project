@@ -20,15 +20,21 @@ html {
   font-size: 14px;
 }
 
+.btn-link,
+a {
+  color: #243b55!important;
+  text-decoration: none !important;
+}
+
 .navbar {
   height: 100px;
-  padding: 0!important;
+  padding: 0 !important;
 }
 
 .card {
   border-radius: 5px !important;
-  box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, .03), 0 10px 10px rgba(0, 0, 0, .07);
-  border: 0!important;
+  box-shadow: 0 -10px 10px -5px rgba(0, 0, 0, 0.03), 0 10px 10px rgba(0, 0, 0, 0.07);
+  border: 0 !important;
 }
 
 .card .card-body {
@@ -45,4 +51,33 @@ html {
 .card-body .card-title {
   font-size: 1.5rem;
   max-width: 300px;
+}
+
+.card.hover {
+  transition: all .2s ease;
+}
+
+.card.hover:hover {
+  transform: scale(1.03);
+}
+
+.course-card {
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.course-card .card-header {
+  background: none;
+  border: 0;
+  padding: 0.3rem 0.6rem 0;
+}
+
+.course-card .card-header .btn-link {
+  color: #000;
+  font-weight: 500;
+}
+
+.course-card .card-body {
+  padding: 0 1.3rem 1rem !important;
+  color: #666;
 }

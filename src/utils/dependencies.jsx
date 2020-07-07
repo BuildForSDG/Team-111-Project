@@ -1,5 +1,4 @@
-import {doGet} from "./apiRequestHandler";
-
+import { doGet } from "./apiRequestHandler";
 
 const getAccountTypes = async () => {
     const res = await doGet('account_types')
@@ -12,7 +11,7 @@ const getAcademicLevels = async () => {
 };
 
 const getAcademicSubjects = async () => {
-    const res = await doGet('subjects');
+    const res = await doGet('available_courses');
     return res.results;
 };
 
@@ -31,13 +30,4 @@ const getMyCourses = async () => {
     return res.results;
 };
 
-const getProfile = async () => {
-    const res = await doGet('profile');
-    return res.results;
-};
-
-getProfile().then(res=>{
-    console.log("tess", res)
-})
-
-export {getAccountTypes, getAcademicSubjects, getAcademicLevels, getCountries, getAvailableCourses, getMyCourses, getProfile}
+export { getAccountTypes, getAcademicSubjects, getAcademicLevels, getCountries, getAvailableCourses, getMyCourses }

@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardText, CardTitle, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
-import {getAccountTypes, getMyCourses} from "../../utils/dependencies";
+import { getMyCourses } from "../../utils/dependencies";
+
 export default () => {
-
     const [myCourses, setMyCourses] = useState([]);
-
 
     useEffect(() => {
         if (myCourses.length < 1) getMyCourses().then(results => setMyCourses(results));
-
-    }, [myCourses])
-
+    }, [myCourses]);
 
     return (
         <>
@@ -50,7 +47,7 @@ export default () => {
             <br />
             <Row>
                 {myCourses.map(course => (
-                    <Col sm={4} key={course.type.code}>
+                    <Col sm={4} key={course.type.code} className="mb-4">
                         <Card body>
 
                             <CardTitle>{course.type.name}</CardTitle>

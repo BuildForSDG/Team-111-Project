@@ -1,22 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import {Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane} from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button, Badge } from 'reactstrap';
 import classnames from 'classnames';
-import {getAvailableCourses, getMyCourses} from "../../utils/dependencies";
+import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
+import { Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
+import { useContext } from 'react';
+import AppContext from '../../context';
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 export default () => {
+    let { url } = useRouteMatch();
     const [activeTab, setActiveTab] = useState('1');
     const [availableCourses, setAvailableCourses] = useState([]);
     const [myCourses, setMyCourses] = useState([]);
+    const { state } = useContext(AppContext);
+    const query = useQuery();
+    const history = useHistory();
+
+    useEffect(() => {
+        const tab = query.get('tab');
+        if (tab && tab.match(/1|2/gi)) setActiveTab(`${tab}`);
+    }, [query]);
 
     useEffect(() => {
         if (availableCourses.length < 1) getAvailableCourses().then(results => setAvailableCourses(results));
         if (myCourses.length < 1) getMyCourses().then(results => setMyCourses(results));
     }, [availableCourses, myCourses]);
 
-    // console.log(availableCourses, myCourses)
     const toggle = tab => {
-        if (activeTab !== tab) setActiveTab(tab);
+        history.push(`/dashboard/courses?tab=${tab}`)
     }
+
     return (
         <>
             <div className="d-flex align-items-center justify-content-between">
@@ -25,7 +41,7 @@ export default () => {
                 <Nav tabs pills>
                     <NavItem>
                         <NavLink
-                            className={classnames({active: activeTab === '1'})}
+                            className={classnames({ active: activeTab === '1' })}
                             onClick={() => {
                                 toggle('1');
                             }}
@@ -34,7 +50,7 @@ export default () => {
                     </NavItem>
                     <NavItem>
                         <NavLink
-                            className={classnames({active: activeTab === '2'})}
+                            className={classnames({ active: activeTab === '2' })}
                             onClick={() => {
                                 toggle('2');
                             }}
@@ -43,31 +59,53 @@ export default () => {
                     </NavItem>
                 </Nav>
             </div>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
                     <Row>
-                        {availableCourses.map(course => (<Col sm={4}>
-                                <Card className="mb-4" key={course.type.code} body>
-                                    <CardTitle>
-                                        {course.type.name}
-                                        <br/><small className="text-info">{course.teacher_data.name}</small>
-                                    </CardTitle>
-                                    <CardText>{course.type.description}</CardText>
-                                </Card>
+                        {availableCourses.map(course => (
+                            <Col sm={4} key={course._id} className="mb-4">
+                                <Link to={`${url}/${course._id}`} className="d-flex h-100">
+                                    <Card className="h-100" key={course.type.code} body>
+                                        <CardTitle>
+                                            {course.type.name}
+                                            <br /><small className="text-info">{course.teacher_data.name}</small>
+                                        </CardTitle>
+                                        <CardText>{course.type.description}</CardText>
+                                    </Card>
+                                </Link>
                             </Col>
                         ))}
                     </Row>
                 </TabPane>
                 <TabPane tabId="2">
+                    {
+                        state && state.user.account_type.code === 'teacher' && (
+                            <div className="d-flex justify-content-end">
+                                <Link to={`${url}/add`}>
+                                    <Button className="mb-4" outline type="button" color="primary">
+                                        Add new course
+                                    </Button>
+                                </Link>
+                            </div>
+                        )
+                    }
                     <Row>
                         {myCourses.map(course => (
-                            <Col sm={4} key={course.type.code}>
-                                <Card body>
-                                    <CardTitle>{course.type.name}</CardTitle>
-                                    <CardText>{course.type.description}</CardText>
-                                </Card>
+                            <Col sm={4} key={course.type.code} className="mb-4">
+                                <Link to={`${url}/${course._id}`} className="d-flex h-100">
+                                    <Card body className="h-100 d-flex flex-column align-items-start">
+                                        {
+                                            course.status.code === 'pending' && <Badge color="warning" className="mb-2">{course.status.name}</Badge>
+                                        }
+                                        {
+                                            course.status.code === 'active' && <Badge color="success" className="mb-2">{course.status.name}</Badge>
+                                        }
+                                        <CardTitle>{course.type.name}</CardTitle>
+                                        <CardText>{course.type.description}</CardText>
+                                    </Card>
+                                </Link>
                             </Col>
                         ))}
                     </Row>
