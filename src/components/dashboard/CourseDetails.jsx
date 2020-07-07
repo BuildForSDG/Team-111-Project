@@ -1,29 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom'
 import { Button } from 'reactstrap';
-import { doGet } from '../../utils/apiRequestHandler';
+import { doGet, doPost } from '../../utils/apiRequestHandler';
 import { useState } from 'react';
+import AppContext from '../../context';
 
 export default () => {
     const { id } = useParams();
     const history = useHistory();
     const [course, setCourse] = useState(null);
+    const [loading, setLoading] = useState(false)
+    const [activating, setActivating] = useState(false)
+    const { state } = useContext(AppContext);
 
     useEffect(() => {
+        setLoading(true);
         doGet(`/courses/${id}`).then(res => {
             setCourse(res.results);
+            setLoading(false);
         })
     }, [id]);
 
+    const activate = () => {
+        setActivating(true);
+        doPost(`/courses/${course._id}/activate`, { code: course.type.code }).then(({ reqStatus }) => {
+            setActivating(false);
+            if (reqStatus >= 200 && reqStatus < 300) history.push('/dashboard/courses?tab=2');
+        })
+    }
+
     return (
         <>
+            {loading && <p>Loading</p>}
+
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <Button type="button" color="secondary" outline size="sm" onClick={() => history.goBack()}>
                     Back
                 </Button>
-                <Button type="button" color="primary" disabled>
-                    Begin course
-                </Button>
+                {
+                    course && state && state.user.account_type.code === 'teacher' && course.status.code === 'pending' && (
+                        <Button type="button" outline color="primary" onClick={activate} disabled={activating}>
+                            Activate Course
+                        </Button>
+                    )
+                }
+                {
+                    state && state.user.account_type.code !== 'teacher' && (
+                        <Button type="button" color="primary" disabled>
+                            Begin course
+                        </Button>
+                    )
+                }
             </div>
             {
                 course && (
@@ -62,7 +89,7 @@ export default () => {
                                 }
                             </div>
                             {
-                                !course.syllabus.length && <p className="mt-4">No courses</p>
+                                !course.syllabus.length && <p className="mt-4">No syllabus</p>
                             }
                         </div>
                     </>
