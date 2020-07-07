@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button } from 'reactstrap';
+import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button, Badge } from 'reactstrap';
 import classnames from 'classnames';
 import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
 import { Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
@@ -95,7 +95,13 @@ export default () => {
                         {myCourses.map(course => (
                             <Col sm={4} key={course.type.code} className="mb-4">
                                 <Link to={`${url}/${course._id}`} className="d-flex h-100">
-                                    <Card body className="h-100">
+                                    <Card body className="h-100 d-flex flex-column align-items-start">
+                                        {
+                                            course.status.code === 'pending' && <Badge color="warning" className="mb-2">{course.status.name}</Badge>
+                                        }
+                                        {
+                                            course.status.code === 'active' && <Badge color="success" className="mb-2">{course.status.name}</Badge>
+                                        }
                                         <CardTitle>{course.type.name}</CardTitle>
                                         <CardText>{course.type.description}</CardText>
                                     </Card>
