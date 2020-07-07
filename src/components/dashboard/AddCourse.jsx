@@ -72,7 +72,7 @@ export default () => {
                                     <Label for="exampleText">Details</Label>
                                     <Input type="textarea" value={topics[i].details} onChange={(e) => handleTopicChange(topic.id, 'details', e.target.value)} disabled={loading} />
                                 </FormGroup>
-                                <Button type="button" color="danger" outline size="sm" onClick={() => deleteTopic(i)} disabled={loading}>
+                                <Button type="button" color="danger" outline size="sm" onClick={() => deleteTopic(topic.id)} disabled={loading}>
                                     Delete
                                 </Button>
                             </div>
