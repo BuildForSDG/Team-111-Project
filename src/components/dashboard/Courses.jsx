@@ -1,9 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Card, CardText, CardTitle, Row, Col, Nav, NavLink, NavItem, TabContent, TabPane, Button, Badge } from 'reactstrap';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+    Card,
+    CardText,
+    CardTitle,
+    Row,
+    Col,
+    Nav,
+    NavLink,
+    NavItem,
+    TabContent,
+    TabPane,
+    Button,
+    Badge
+} from 'reactstrap';
 import classnames from 'classnames';
-import { getAvailableCourses, getMyCourses } from "../../utils/dependencies";
-import { Link, useRouteMatch, useLocation, useHistory } from 'react-router-dom'
-import { useContext } from 'react';
+import {getAvailableCourses, getMyCourses} from "../../utils/dependencies";
+import {Link, useRouteMatch, useLocation, useHistory} from 'react-router-dom'
+import {useContext} from 'react';
 import AppContext from '../../context';
 
 function useQuery() {
@@ -11,13 +24,15 @@ function useQuery() {
 }
 
 export default () => {
-    let { url } = useRouteMatch();
+    let {url} = useRouteMatch();
     const [activeTab, setActiveTab] = useState('1');
     const [availableCourses, setAvailableCourses] = useState([]);
     const [myCourses, setMyCourses] = useState([]);
-    const { state } = useContext(AppContext);
+    const {state} = useContext(AppContext);
     const query = useQuery();
     const history = useHistory();
+
+    const rendered = useRef(false)
 
     useEffect(() => {
         const tab = query.get('tab');
@@ -26,7 +41,10 @@ export default () => {
 
     useEffect(() => {
         if (availableCourses.length < 1) getAvailableCourses().then(results => setAvailableCourses(results));
-        if (myCourses.length < 1) getMyCourses().then(results => setMyCourses(results));
+        if (myCourses.length < 1 && !rendered.current) getMyCourses().then(results => {
+            setMyCourses(results)
+            rendered.current = true;
+        });
     }, [availableCourses, myCourses]);
 
     const toggle = tab => {
@@ -41,7 +59,7 @@ export default () => {
                 <Nav tabs pills>
                     <NavItem>
                         <NavLink
-                            className={classnames({ active: activeTab === '1' })}
+                            className={classnames({active: activeTab === '1'})}
                             onClick={() => {
                                 toggle('1');
                             }}
@@ -50,7 +68,7 @@ export default () => {
                     </NavItem>
                     <NavItem>
                         <NavLink
-                            className={classnames({ active: activeTab === '2' })}
+                            className={classnames({active: activeTab === '2'})}
                             onClick={() => {
                                 toggle('2');
                             }}
@@ -59,8 +77,8 @@ export default () => {
                     </NavItem>
                 </Nav>
             </div>
-            <br />
-            <br />
+            <br/>
+            <br/>
             <TabContent activeTab={activeTab}>
                 <TabPane tabId="1">
                     <Row>
@@ -70,7 +88,7 @@ export default () => {
                                     <Card className="h-100" key={course.type.code} body>
                                         <CardTitle>
                                             {course.type.name}
-                                            <br /><small className="text-info">{course.teacher_data.name}</small>
+                                            <br/><small className="text-info">{course.teacher_data.name}</small>
                                         </CardTitle>
                                         <CardText>{course.type.description}</CardText>
                                     </Card>
@@ -97,10 +115,12 @@ export default () => {
                                 <Link to={`${url}/${course._id}`} className="d-flex h-100">
                                     <Card body className="h-100 d-flex flex-column align-items-start">
                                         {
-                                            course.status.code === 'pending' && <Badge color="warning" className="mb-2">{course.status.name}</Badge>
+                                            course.status.code === 'pending' &&
+                                            <Badge color="warning" className="mb-2">{course.status.name}</Badge>
                                         }
                                         {
-                                            course.status.code === 'active' && <Badge color="success" className="mb-2">{course.status.name}</Badge>
+                                            course.status.code === 'active' &&
+                                            <Badge color="success" className="mb-2">{course.status.name}</Badge>
                                         }
                                         <CardTitle>{course.type.name}</CardTitle>
                                         <CardText>{course.type.description}</CardText>

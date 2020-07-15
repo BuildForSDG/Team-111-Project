@@ -98,6 +98,12 @@ export default () => {
     const found = accountTypes.some(el => el.code === value.toLowerCase());
     if (!found) return;
     setField('account_type', value);
+
+
+    if (value.toLowerCase() === "teacher"){
+      setStep(4);
+      return;
+    }
     setStep(3)
   };
 
